@@ -9,6 +9,7 @@
 #import "HTPlayer.h"
 #import "GCDAsyncUdpSocket.h"
 #import "RecordAmrCode.h"
+#import <AVFoundation/AVFoundation.h>
 
 #define kDefaultIP @"234.5.6.1"
 #define kDefaultPort 8090
@@ -56,8 +57,20 @@
         NSLog(@"instance me !");
         
         [self initAudioPlaying];
+        
+        [self setAudioSession];
+        
     }
     return self;
+}
+
+- (void)setAudioSession {
+    //音频会话
+    AVAudioSession *session = [AVAudioSession sharedInstance];
+    //设置会话类型(后台播放)
+    [session setCategory:AVAudioSessionCategoryPlayback error:nil];
+    //激活会话
+    [session setActive:YES error:nil];
 }
 
 //设置录音格式
@@ -89,14 +102,13 @@ void GenericOutputCallback (
     NSData *pcmData = nil;
     
     NSLog(@"receiveData count : %lu", (unsigned long)player.receiveData.count);
-    if (player.receiveData == 0) {
-        Float32 gain = 0.0;
-        AudioQueueSetParameter (player.aqc.outputQueue,kAudioQueueParam_Volume,gain);
-    }
+    
     if([player.receiveData count] > 0){
         NSData *amrData = [player.receiveData objectAtIndex:0];
         pcmData = [player.recordAmrCode decodeAMRDataToPCMData:amrData];
         if (pcmData) {
+            Float32 gain = 1.0;
+            AudioQueueSetParameter (player.aqc.outputQueue,kAudioQueueParam_Volume,gain);
             if(pcmData.length < 10000){
                 memcpy(inBuffer->mAudioData, pcmData.bytes, pcmData.length);
                 inBuffer->mAudioDataByteSize = (UInt32)pcmData.length;
@@ -107,6 +119,9 @@ void GenericOutputCallback (
         [player.receiveData removeObjectAtIndex:0];
     }else{
 //            makeSilent(inBuffer);
+//        静音
+        Float32 gain = 0.0;
+        AudioQueueSetParameter (player.aqc.outputQueue,kAudioQueueParam_Volume,gain);
     }
     AudioQueueEnqueueBuffer(player.aqc.outputQueue,inBuffer,0,NULL);
 }
@@ -120,7 +135,7 @@ void GenericOutputCallback (
     {
         AudioQueueAllocateBuffer(_aqc.outputQueue, kDefaultOutputBufferSize, &_aqc.outputBuffers[i]);
     }
-    for (int i=0; i < kNumberBuffers; ++i) {
+    for (int i = 0; i < kNumberBuffers; ++i) {
         //改变数据
         makeSilent(_aqc.outputBuffers[i]);
         //给输出队列完成配置
@@ -167,6 +182,12 @@ void makeSilent(AudioQueueBufferRef buffer){
         self.isplaying = NO;
         Float32 gain = 0.0;
         AudioQueueSetParameter (_aqc.outputQueue,kAudioQueueParam_Volume,gain);
+        for (int i = 0; i < kNumberBuffers; ++i) {
+            //改变数据
+            makeSilent(_aqc.outputBuffers[i]);
+            //给输出队列完成配置
+            AudioQueueEnqueueBuffer(_aqc.outputQueue,_aqc.outputBuffers[i],0,NULL);
+        }
     }
 }
 
@@ -188,7 +209,7 @@ withFilterContext:(id)filterContext{
 //    } else {
 //        self.timetap = [NSDate date].timeIntervalSince1970;
 //    }
-    NSLog(@"%@",data);
+//    NSLog(@"%@",data);
     NSLog(@"udp socket receive");
 //    NSLog(@"%ld",data.length);
     
@@ -211,6 +232,10 @@ withFilterContext:(id)filterContext{
     }
 }
 
+- (void)dealloc {
+    [_udpSocket close];
+    _udpSocket = nil;
+}
 
 
 @end
