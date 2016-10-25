@@ -9,6 +9,7 @@
 #import "ViewController.h"
 
 @interface ViewController ()
+
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
 @property (weak, nonatomic) IBOutlet UILabel *promptLable;
 
@@ -39,12 +40,6 @@
     }
 }
 
-//-(IBAction)startPlaying:(id)sender{
-//    [_player startPlaying];
-//}
-//-(IBAction)stopPlaying:(id)sender{
-//    [_player stopPlaying];
-//}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

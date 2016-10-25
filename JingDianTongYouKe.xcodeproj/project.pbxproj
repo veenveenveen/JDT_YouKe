@@ -15,9 +15,6 @@
 		903C91151D3000F5000EAF08 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 903C91141D3000F5000EAF08 /* Assets.xcassets */; };
 		903C91181D3000F5000EAF08 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 903C91161D3000F5000EAF08 /* LaunchScreen.storyboard */; };
 		90443E9D1D585464005D91CE /* HTPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 90443E9C1D585464005D91CE /* HTPlayer.m */; };
-		90443EA91D585474005D91CE /* libopencore-amrnb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90443EA71D585474005D91CE /* libopencore-amrnb.a */; };
-		90443EAA1D585474005D91CE /* libopencore-amrwb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90443EA81D585474005D91CE /* libopencore-amrwb.a */; };
-		90443EAD1D585595005D91CE /* RecordAmrCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 90443EAC1D585595005D91CE /* RecordAmrCode.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,14 +32,6 @@
 		903C91191D3000F5000EAF08 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		90443E9B1D585464005D91CE /* HTPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTPlayer.h; sourceTree = "<group>"; };
 		90443E9C1D585464005D91CE /* HTPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTPlayer.m; sourceTree = "<group>"; };
-		90443EA11D585474005D91CE /* interf_dec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = interf_dec.h; sourceTree = "<group>"; };
-		90443EA21D585474005D91CE /* interf_enc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = interf_enc.h; sourceTree = "<group>"; };
-		90443EA41D585474005D91CE /* dec_if.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dec_if.h; sourceTree = "<group>"; };
-		90443EA51D585474005D91CE /* if_rom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = if_rom.h; sourceTree = "<group>"; };
-		90443EA71D585474005D91CE /* libopencore-amrnb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libopencore-amrnb.a"; sourceTree = "<group>"; };
-		90443EA81D585474005D91CE /* libopencore-amrwb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libopencore-amrwb.a"; sourceTree = "<group>"; };
-		90443EAB1D585595005D91CE /* RecordAmrCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordAmrCode.h; sourceTree = "<group>"; };
-		90443EAC1D585595005D91CE /* RecordAmrCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecordAmrCode.m; sourceTree = "<group>"; };
 		991363960ACD86D99ABCCB0D /* Pods-JingDianTongYouKe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JingDianTongYouKe.release.xcconfig"; path = "Pods/Target Support Files/Pods-JingDianTongYouKe/Pods-JingDianTongYouKe.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -52,8 +41,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4B9F4565ED9BAFA8B4248B55 /* libPods-JingDianTongYouKe.a in Frameworks */,
-				90443EAA1D585474005D91CE /* libopencore-amrwb.a in Frameworks */,
-				90443EA91D585474005D91CE /* libopencore-amrnb.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -89,7 +76,6 @@
 		903C91071D3000F5000EAF08 /* JingDianTongYouKe */ = {
 			isa = PBXGroup;
 			children = (
-				90443E9E1D585474005D91CE /* amr_en_de */,
 				90AC645F1D3351F20020CB76 /* Class */,
 				903C910B1D3000F5000EAF08 /* AppDelegate.h */,
 				903C910C1D3000F5000EAF08 /* AppDelegate.m */,
@@ -112,56 +98,9 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		90443E9E1D585474005D91CE /* amr_en_de */ = {
-			isa = PBXGroup;
-			children = (
-				90443E9F1D585474005D91CE /* include */,
-				90443EA61D585474005D91CE /* lib */,
-			);
-			path = amr_en_de;
-			sourceTree = "<group>";
-		};
-		90443E9F1D585474005D91CE /* include */ = {
-			isa = PBXGroup;
-			children = (
-				90443EA01D585474005D91CE /* opencore-amrnb */,
-				90443EA31D585474005D91CE /* opencore-amrwb */,
-			);
-			path = include;
-			sourceTree = "<group>";
-		};
-		90443EA01D585474005D91CE /* opencore-amrnb */ = {
-			isa = PBXGroup;
-			children = (
-				90443EA11D585474005D91CE /* interf_dec.h */,
-				90443EA21D585474005D91CE /* interf_enc.h */,
-			);
-			path = "opencore-amrnb";
-			sourceTree = "<group>";
-		};
-		90443EA31D585474005D91CE /* opencore-amrwb */ = {
-			isa = PBXGroup;
-			children = (
-				90443EA41D585474005D91CE /* dec_if.h */,
-				90443EA51D585474005D91CE /* if_rom.h */,
-			);
-			path = "opencore-amrwb";
-			sourceTree = "<group>";
-		};
-		90443EA61D585474005D91CE /* lib */ = {
-			isa = PBXGroup;
-			children = (
-				90443EA71D585474005D91CE /* libopencore-amrnb.a */,
-				90443EA81D585474005D91CE /* libopencore-amrwb.a */,
-			);
-			path = lib;
-			sourceTree = "<group>";
-		};
 		90AC645F1D3351F20020CB76 /* Class */ = {
 			isa = PBXGroup;
 			children = (
-				90443EAB1D585595005D91CE /* RecordAmrCode.h */,
-				90443EAC1D585595005D91CE /* RecordAmrCode.m */,
 				90443E9B1D585464005D91CE /* HTPlayer.h */,
 				90443E9C1D585464005D91CE /* HTPlayer.m */,
 			);
@@ -206,7 +145,7 @@
 		903C90FD1D3000F5000EAF08 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = huatengIOT;
 				TargetAttributes = {
 					903C91041D3000F5000EAF08 = {
@@ -299,7 +238,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				90443EAD1D585595005D91CE /* RecordAmrCode.m in Sources */,
 				90443E9D1D585464005D91CE /* HTPlayer.m in Sources */,
 				903C91101D3000F5000EAF08 /* ViewController.m in Sources */,
 				903C910D1D3000F5000EAF08 /* AppDelegate.m in Sources */,
@@ -343,8 +281,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -388,8 +328,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -422,10 +364,7 @@
 				INFOPLIST_FILE = JingDianTongYouKe/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/JingDianTongYouKe/amr_en_de/lib",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.huatengIOT.JingDianTongYouKe;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -440,10 +379,7 @@
 				INFOPLIST_FILE = JingDianTongYouKe/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/JingDianTongYouKe/amr_en_de/lib",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.huatengIOT.JingDianTongYouKe;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
