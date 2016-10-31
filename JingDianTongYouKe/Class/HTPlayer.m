@@ -10,14 +10,24 @@
 #import "GCDAsyncUdpSocket.h"
 #import <AVFoundation/AVFoundation.h>
 
-#define kDefaultIP @"234.5.6.1"
-#define kDefaultPort 8090
+
+//#define kDefaultIP @"234.5.6.1"
+#define kDefaultIP @"255.255.255.255"
+//#define kDefaultIP @"172.16.78.138"
+
+//#define kDefaultPort 8090
+//#define kDefaultPort 5760
+//#define kDefaultPort 5761
+#define kDefaultPort 9081
 
 @interface HTPlayer () <GCDAsyncUdpSocketDelegate>
+
+@property dispatch_queue_t myqueue;
+
 //接收数据的数组
-@property (nonatomic, strong) NSMutableArray *receiveData;
+@property (atomic, strong) NSMutableArray *receiveData;
 @property (nonatomic, strong) GCDAsyncUdpSocket *udpSocket;
-//@property (nonatomic) NSTimeInterval timetap;
+    
 @end
 
 @implementation HTPlayer
@@ -25,8 +35,10 @@
 - (instancetype) init{
     self = [super init];
     if (self){
-        dispatch_queue_t global = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-        _udpSocket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:global];
+        _myqueue = dispatch_queue_create("com.JDTYouKe.serialQueue", DISPATCH_QUEUE_SERIAL);
+//        dispatch_queue_t global = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+        _udpSocket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:_myqueue];
+        NSLog(@"-------------current thread: %@",[NSThread currentThread]);
         NSError *error;
         [self.udpSocket bindToPort:kDefaultPort error:&error];
         if (error != nil) {
@@ -70,8 +82,10 @@
     //设置音量
     Float32 gain = 1.0;
     AudioQueueSetParameter (_aqc.outputQueue,kAudioQueueParam_Volume,gain);
+    //开始接收数据
+    [_udpSocket beginReceiving:nil];
     //开启播放队列
-    //AudioQueueStart(_aqc.outputQueue,NULL);
+    AudioQueueStart(_aqc.outputQueue,NULL);
 }
 
 - (void)setAudioSession {
@@ -104,38 +118,47 @@ void GenericOutputCallback (
                             AudioQueueRef        inAQ,
                             AudioQueueBufferRef  inBuffer
                             ){
+    
+    NSLog(@"***************current thread: %@",[NSThread currentThread]);
 //    NSLog(@"播放回调 GenericOutputCallback ");
     HTPlayer *player= (__bridge HTPlayer *)(inUserData);
-    NSData *pcmData = nil;
+    
     
     NSLog(@"receiveData count : %lu", (unsigned long)player.receiveData.count);
     
-    if([player.receiveData count] > 0){
-
-        pcmData = [player.receiveData objectAtIndex:0];
-        
-        Float32 gain = 1.0;
-        AudioQueueSetParameter (player.aqc.outputQueue,kAudioQueueParam_Volume,gain);
-        
-        memcpy(inBuffer->mAudioData, pcmData.bytes, pcmData.length);
-        inBuffer->mAudioDataByteSize = (UInt32)pcmData.length;
-        inBuffer->mPacketDescriptionCount = 0;
-        
-        [player.receiveData removeObjectAtIndex:0];
-
-        if ([player.receiveData count] > 7) {
-            [player.receiveData removeAllObjects];
-            NSLog(@".......");
-        }
-        
-    }else{
-        if (pcmData == nil) {
+    
+    dispatch_async(player.myqueue, ^{
+        if([player.receiveData count] > 0){
+            
+            
+            NSData *pcmData = nil;
+            
+            pcmData = [player.receiveData objectAtIndex:0];
+            
+            Float32 gain = 1.0;
+            AudioQueueSetParameter (player.aqc.outputQueue,kAudioQueueParam_Volume,gain);
+            
+            memcpy(inBuffer->mAudioData, pcmData.bytes, pcmData.length);
+            inBuffer->mAudioDataByteSize = (UInt32)pcmData.length;
+            inBuffer->mPacketDescriptionCount = 0;
+            
+            [player.receiveData removeObjectAtIndex:0];
+            
+            if ([player.receiveData count] > 4) {
+                [player.receiveData removeAllObjects];
+                NSLog(@".......");
+            }
+            
+        }else{
             makeSilent(inBuffer);
+            [player.receiveData removeAllObjects];
+            //        静音
+            //        Float32 gain = 0.2;
+            //        AudioQueueSetParameter (player.aqc.outputQueue,kAudioQueueParam_Volume,gain);
         }
-//        静音
-        Float32 gain = 0.2;
-        AudioQueueSetParameter (player.aqc.outputQueue,kAudioQueueParam_Volume,gain);
-    }
+    });
+    
+    
 
     AudioQueueEnqueueBuffer(player.aqc.outputQueue,inBuffer,0,NULL);
 }
@@ -152,58 +175,61 @@ void makeSilent(AudioQueueBufferRef buffer){
 //开始
 - (void)startPlaying{
     if(!self.isplaying){
-        
+        self.isplaying = YES;
         Float32 gain = 1.0;
         AudioQueueSetParameter (_aqc.outputQueue,kAudioQueueParam_Volume,gain);
-        //开始接收数据
-        [_udpSocket beginReceiving:nil];
-        //开启播放队列
-        AudioQueueStart(_aqc.outputQueue,NULL);
-        //
-        self.isplaying = YES;
-        [_receiveData removeAllObjects];
     }
 }
 //暂停
 - (void)stopPlaying{
     if(self.isplaying){
         //暂停接收数据
-        [self.udpSocket pauseReceiving];
-        [_receiveData removeAllObjects];
+//        [self.udpSocket pauseReceiving];
+//        [_receiveData removeAllObjects];
         //暂停播放队列
-        AudioQueuePause(_aqc.outputQueue);
+//        AudioQueuePause(_aqc.outputQueue);
         self.isplaying = NO;
         Float32 gain = 0.0;
         AudioQueueSetParameter (_aqc.outputQueue,kAudioQueueParam_Volume,gain);
-        for (int i = 0; i < kNumberBuffers; ++i) {
-            //改变数据
-            makeSilent(_aqc.outputBuffers[i]);
-            //给输出队列完成配置
-            AudioQueueEnqueueBuffer(_aqc.outputQueue,_aqc.outputBuffers[i],0,NULL);
-        }
+//        for (int i = 0; i < kNumberBuffers; ++i) {
+//            //改变数据
+//            makeSilent(_aqc.outputBuffers[i]);
+//            //给输出队列完成配置
+//            AudioQueueEnqueueBuffer(_aqc.outputQueue,_aqc.outputBuffers[i],0,NULL);
+//        }
     }
 }
 
+- (void)udpSocket:(GCDAsyncUdpSocket *)sock didConnectToAddress:(NSData *)address {
+    NSLog(@"connect");
+}
+
 - (void)udpSocket:(GCDAsyncUdpSocket *)sock didReceiveData:(NSData *)data fromAddress:(NSData *)address withFilterContext:(id)filterContext{
-    
+    NSLog(@"<<<<<<<<<<<<<<<current thread: %@",[NSThread currentThread]);
     if (!_isplaying) {
         return;
     }
     
-    if (_receiveData.count > 7) {
-        [_receiveData removeAllObjects];
-        NSLog(@"remove all .....");
-    }
+//    if (_receiveData.count < 3) {
+//        [_receiveData addObject:data];//解决延迟问题???
+//    }
+//    else {
+//        NSLog(@"count ................ > 3");
+//    }
+    
+    dispatch_async(_myqueue, ^{
+        [_receiveData addObject:data];
+    });
     
     NSLog(@"udp socket receive");
     NSLog(@"%ld",(unsigned long)data.length);
-    
-    [_receiveData addObject:data];
 
 }
 
 - (void)dealloc {
     [_udpSocket close];
+    [_receiveData removeAllObjects];
+    _receiveData = nil;
     _udpSocket = nil;
 }
 

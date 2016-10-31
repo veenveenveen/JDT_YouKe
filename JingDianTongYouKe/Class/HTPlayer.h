@@ -14,7 +14,7 @@
 //采样率为8000
 #define kSamplingRate 8000
 
-#define kDefaultOutputBufferSize 1050
+#define kDefaultOutputBufferSize 640
 
 typedef struct AQCallbackStruct{
     AudioStreamBasicDescription mDataFormat;//音频流描述对象  格式化音频数据
