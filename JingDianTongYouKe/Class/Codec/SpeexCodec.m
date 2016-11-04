@@ -69,12 +69,8 @@
 - (NSData *)decode:(char *)encodedBytes length:(int)lengthOfBytes {
 	if ( ! codecOpenedTimes)
 		return 0;
-    
 
     short decodedBuffer[1024];
-    
-//    char cbits[200];
-//    memcpy(cbits, encodedBytes, lengthOfBytes);
     
     speex_bits_read_from(&decodeSpeexBits, encodedBytes, lengthOfBytes);
     

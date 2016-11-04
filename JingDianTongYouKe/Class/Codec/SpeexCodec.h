@@ -6,11 +6,6 @@
 //  Copyright (c) 2012 Sense Force. All rights reserved.
 //
 
-/**----Guide----
- * Encode: open -> encode:length -> close
- * Decode: open -> encode:length:output -> close
- */
-
 #import <Foundation/Foundation.h>
 #import "SpeexAllHeaders.h"
 

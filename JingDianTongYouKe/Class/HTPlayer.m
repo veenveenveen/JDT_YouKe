@@ -10,7 +10,7 @@
 #import "GCDAsyncUdpSocket.h"
 #import <AVFoundation/AVFoundation.h>
 #import "SpeexCodec.h"
-#import "HTVoiceCodec.h"
+#import "HTSpeexCodec.h"
 
 #define kDefaultIP @"234.5.6.1"
 //#define kDefaultIP @"255.255.255.255"
@@ -30,7 +30,6 @@
     
     NSMutableArray *emptyAudioQueueBufferIndexs;
     
-    HTVoiceCodec *voiceCodec;
     SpeexCodec *codec;
     
     char encoded[FRAME_SIZE * 2];
@@ -41,6 +40,7 @@
 }
 
 @property dispatch_queue_t myqueue;
+@property (nonatomic, strong) HTSpeexCodec *spxCodec;
 
 //接收数据的数组
 @property (atomic, strong) NSMutableArray *receiveData;
@@ -56,9 +56,9 @@
         
         emptyAudioQueueBufferIndexs = [[NSMutableArray alloc] initWithCapacity:kNumberBuffers];
         codec = [[SpeexCodec alloc] init];
-        voiceCodec = [[HTVoiceCodec alloc] init];
         tempData = [[NSMutableData alloc] init];
         speexDatas = [[NSMutableArray alloc] init];
+        _spxCodec = [[HTSpeexCodec alloc] init];
         
         _myqueue = dispatch_queue_create("com.JDTYouKe.serialQueue", DISPATCH_QUEUE_SERIAL);
 //        dispatch_queue_t global = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
@@ -146,26 +146,38 @@ void GenericOutputCallback (void                 *inUserData,
 {
     @autoreleasepool{
         //NSLog(@"*******current thread: %@",[NSThread currentThread]);
-//        NSLog(@"播放回调 GenericOutputCallback ");
+        NSLog(@"播放回调 GenericOutputCallback ");
         HTPlayer *player = (__bridge HTPlayer *)(inUserData);
-        //音量
-        Float32 gain = 1.0;
-        AudioQueueSetParameter (player.aqc.outputQueue,kAudioQueueParam_Volume,gain);
         
         if (player.receiveData.count > 0) {
-            NSData *spxData = [player.receiveData objectAtIndex:0];
-            
-            NSData *mPcmData = [player decodeToPcmFromData:spxData];
-            NSLog(@"pcm data = %lu", mPcmData.length);
-            
-            
-            
-            memcpy(inBuffer->mAudioData, mPcmData.bytes, mPcmData.length);
-            inBuffer->mAudioDataByteSize = (UInt32)mPcmData.length;
-            
-            [player.receiveData removeObjectAtIndex:0];
+            @synchronized (player) {
+                //音量
+                Float32 gain = 1.0;
+                AudioQueueSetParameter (player.aqc.outputQueue,kAudioQueueParam_Volume,gain);
+                
+                NSData *speexData = [player.receiveData objectAtIndex:0];
+                NSData *pcmData = [player.spxCodec decodeToPcmDataFromData:speexData];
+                
+                //            NSData *pcmData = [player decodeToPcmFromData:speexData];
+                NSLog(@"pcm data = %lu", pcmData.length);
+                
+                memcpy(inBuffer->mAudioData, pcmData.bytes, pcmData.length);
+                
+                inBuffer->mAudioDataByteSize = (UInt32)pcmData.length;
+                
+                [player.receiveData removeObjectAtIndex:0];
+            }
         }
-        AudioQueueEnqueueBuffer(player.aqc.outputQueue, inBuffer, 0, NULL);
+        else {
+            Float32 gain = 0.0;
+            AudioQueueSetParameter (player.aqc.outputQueue,kAudioQueueParam_Volume,gain);
+        }
+        
+        OSStatus errorStatus = AudioQueueEnqueueBuffer(player.aqc.outputQueue, inBuffer, 0, NULL);
+        if (errorStatus) {
+            NSLog(@"MyInputBufferHandler error:%d", (int)errorStatus);
+            return;
+        }
         
 //        [player putEmptyBuffer:inBuffer];
 //        [player readSpeexAndPlay:inAQ buffer:inBuffer];
@@ -179,7 +191,7 @@ void GenericOutputCallback (void                 *inUserData,
     [codec open:4];
     
     NSData *pcmRawData = [codec decode: (char *)spxData.bytes length:(int)spxData.length];
-//    NSLog(@"pcm data = %lu", pcmRawData.length);
+
     [codec close];
     
     return pcmRawData;
@@ -217,7 +229,7 @@ void GenericOutputCallback (void                 *inUserData,
 - (NSData *)decodeToPcmFromSpeexData {
     NSData *pcmRawData = [NSData data];
     [codec open:4];
-    short decodedBuffer[1024];
+//    short decodedBuffer[1024];
     
     while ([[self getSpeexDatas] count] > 0) {
 //        NSLog(@"pcmDatas count : %lu",(unsigned long)[[self getSpeexDatas] count]);
