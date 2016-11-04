@@ -20,7 +20,6 @@
 		909BD13A1DC71F4F005F540D /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 909BD1391DC71F4F005F540D /* AudioToolbox.framework */; };
 		909BD13C1DC71F55005F540D /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 909BD13B1DC71F55005F540D /* CoreAudio.framework */; };
 		909FF84E1DCC4965004C1F2C /* HTSpeexCodec.m in Sources */ = {isa = PBXBuildFile; fileRef = 909FF84A1DCC4965004C1F2C /* HTSpeexCodec.m */; };
-		909FF84F1DCC4965004C1F2C /* SpeexCodec.m in Sources */ = {isa = PBXBuildFile; fileRef = 909FF84D1DCC4965004C1F2C /* SpeexCodec.m */; };
 		909FF8C41DCC49EE004C1F2C /* bitwise.c in Sources */ = {isa = PBXBuildFile; fileRef = 909FF8531DCC49EE004C1F2C /* bitwise.c */; };
 		909FF8C51DCC49EF004C1F2C /* framing.c in Sources */ = {isa = PBXBuildFile; fileRef = 909FF8541DCC49EE004C1F2C /* framing.c */; };
 		909FF8C61DCC49EF004C1F2C /* bits.c in Sources */ = {isa = PBXBuildFile; fileRef = 909FF85B1DCC49EE004C1F2C /* bits.c */; };
@@ -65,6 +64,7 @@
 		909FF8F41DCC49EF004C1F2C /* vbr.c in Sources */ = {isa = PBXBuildFile; fileRef = 909FF8BB1DCC49EE004C1F2C /* vbr.c */; };
 		909FF8F51DCC49EF004C1F2C /* vq.c in Sources */ = {isa = PBXBuildFile; fileRef = 909FF8BE1DCC49EE004C1F2C /* vq.c */; };
 		909FF8F61DCC49EF004C1F2C /* window.c in Sources */ = {isa = PBXBuildFile; fileRef = 909FF8C31DCC49EE004C1F2C /* window.c */; };
+		909FFA4F1DCC525D004C1F2C /* HTThreadSafetyArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 909FFA4E1DCC525D004C1F2C /* HTThreadSafetyArray.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -90,8 +90,6 @@
 		909FF8491DCC4965004C1F2C /* HTSpeexCodec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTSpeexCodec.h; sourceTree = "<group>"; };
 		909FF84A1DCC4965004C1F2C /* HTSpeexCodec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTSpeexCodec.m; sourceTree = "<group>"; };
 		909FF84B1DCC4965004C1F2C /* SpeexAllHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpeexAllHeaders.h; sourceTree = "<group>"; };
-		909FF84C1DCC4965004C1F2C /* SpeexCodec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpeexCodec.h; sourceTree = "<group>"; };
-		909FF84D1DCC4965004C1F2C /* SpeexCodec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpeexCodec.m; sourceTree = "<group>"; };
 		909FF8511DCC49EE004C1F2C /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
 		909FF8531DCC49EE004C1F2C /* bitwise.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bitwise.c; sourceTree = "<group>"; };
 		909FF8541DCC49EE004C1F2C /* framing.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = framing.c; sourceTree = "<group>"; };
@@ -196,6 +194,8 @@
 		909FF8C11DCC49EE004C1F2C /* vq_bfin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vq_bfin.h; sourceTree = "<group>"; };
 		909FF8C21DCC49EE004C1F2C /* vq_sse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vq_sse.h; sourceTree = "<group>"; };
 		909FF8C31DCC49EE004C1F2C /* window.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = window.c; sourceTree = "<group>"; };
+		909FFA4D1DCC525D004C1F2C /* HTThreadSafetyArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTThreadSafetyArray.h; sourceTree = "<group>"; };
+		909FFA4E1DCC525D004C1F2C /* HTThreadSafetyArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTThreadSafetyArray.m; sourceTree = "<group>"; };
 		991363960ACD86D99ABCCB0D /* Pods-JingDianTongYouKe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JingDianTongYouKe.release.xcconfig"; path = "Pods/Target Support Files/Pods-JingDianTongYouKe/Pods-JingDianTongYouKe.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -291,11 +291,9 @@
 		909FF8481DCC4965004C1F2C /* Codec */ = {
 			isa = PBXGroup;
 			children = (
+				909FF84B1DCC4965004C1F2C /* SpeexAllHeaders.h */,
 				909FF8491DCC4965004C1F2C /* HTSpeexCodec.h */,
 				909FF84A1DCC4965004C1F2C /* HTSpeexCodec.m */,
-				909FF84B1DCC4965004C1F2C /* SpeexAllHeaders.h */,
-				909FF84C1DCC4965004C1F2C /* SpeexCodec.h */,
-				909FF84D1DCC4965004C1F2C /* SpeexCodec.m */,
 			);
 			path = Codec;
 			sourceTree = "<group>";
@@ -447,6 +445,8 @@
 			isa = PBXGroup;
 			children = (
 				909FF8481DCC4965004C1F2C /* Codec */,
+				909FFA4D1DCC525D004C1F2C /* HTThreadSafetyArray.h */,
+				909FFA4E1DCC525D004C1F2C /* HTThreadSafetyArray.m */,
 				90443E9B1D585464005D91CE /* HTPlayer.h */,
 				90443E9C1D585464005D91CE /* HTPlayer.m */,
 			);
@@ -613,7 +613,7 @@
 				909FF8C81DCC49EF004C1F2C /* cb_search.c in Sources */,
 				909FF8F51DCC49EF004C1F2C /* vq.c in Sources */,
 				909FF8E11DCC49EF004C1F2C /* modes_wb.c in Sources */,
-				909FF84F1DCC4965004C1F2C /* SpeexCodec.m in Sources */,
+				909FFA4F1DCC525D004C1F2C /* HTThreadSafetyArray.m in Sources */,
 				909FF8D51DCC49EF004C1F2C /* hexc_10_32_table.c in Sources */,
 				909FF8D11DCC49EF004C1F2C /* filterbank.c in Sources */,
 				909FF8DA1DCC49EF004C1F2C /* kiss_fftr.c in Sources */,

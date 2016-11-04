@@ -8,7 +8,18 @@
 
 #import "HTSpeexCodec.h"
 
-@implementation HTSpeexCodec
+@implementation HTSpeexCodec{
+    int enc_frame_size;//压缩时的帧大小
+    int dec_frame_size;//解压时的帧大小
+    
+    void *enc_state;
+    SpeexBits ebits;
+    BOOL is_enc_init;
+    
+    void *dec_state;
+    SpeexBits dbits;
+    BOOL is_dec_init;
+}
 /*
  *初始化方法
  */
@@ -98,9 +109,10 @@
     
     speex_bits_read_from(&dbits, encoded, size);
     
-    int a = speex_decode_int(dec_state, &dbits, decodedSrc);
+    speex_decode_int(dec_state, &dbits, decodedSrc);
     
-    NSLog(@"decode = %d", a);
+//    int a = speex_decode_int(dec_state, &dbits, decodedSrc);
+//    NSLog(@"decode = %d", a);
     NSMutableData *decodedData = [NSMutableData dataWithBytes:decodedSrc length:sizeof(short) * dec_frame_size];
     if (is_dec_init) {
         [self speexDecodeDestroy];
