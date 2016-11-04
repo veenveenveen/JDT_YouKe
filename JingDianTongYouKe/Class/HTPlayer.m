@@ -12,17 +12,9 @@
 #import "HTThreadSafetyArray.h"
 
 @implementation HTPlayer {
-    
     AudioStreamBasicDescription mDataFormat;//音频流描述对象  格式化音频数据
     AudioQueueRef               outputQueue;//音频输出队列
     AudioQueueBufferRef         outputBuffers[kNumberBuffers];
-    
-    NSLock *synlock ;//同步控制
-    
-    NSMutableData  *tempData;    //用于输入的speex切割剩余
-    NSMutableArray *speexArrs;//保存切割的speex数据块
-    
-    NSMutableArray *emptyAudioQueueBufferIndexs;
     
     dispatch_queue_t _decode_queue;
     dispatch_queue_t _receive_queue;
@@ -31,18 +23,11 @@
     
     HTSpeexCodec *spxCodec;
     HTThreadSafetyArray *receiveArray;//接收数据的数组
-
 }
 
 - (instancetype) init{
     self = [super init];
     if (self){
-        
-        emptyAudioQueueBufferIndexs = [[NSMutableArray alloc] initWithCapacity:kNumberBuffers];
-        
-        tempData = [[NSMutableData alloc] init];
-        speexArrs = [NSMutableArray array];
-        
         spxCodec = [[HTSpeexCodec alloc] init];
         receiveArray = [[HTThreadSafetyArray alloc] init];
         
@@ -123,12 +108,12 @@ void outputCallback (void                 *inUserData,
                      AudioQueueBufferRef  inBuffer)
 {
     @autoreleasepool{
-        NSLog(@"*******current thread: %@",[NSThread currentThread]);
+//        NSLog(@"*******current thread: %@",[NSThread currentThread]);
         NSLog(@"播放回调 GenericOutputCallback ");
         HTPlayer *player = (__bridge HTPlayer *)(inUserData);
 //        dispatch_async(player->_decode_queue, ^{
         dispatch_async(dispatch_queue_create("sss", DISPATCH_QUEUE_CONCURRENT), ^{
-            NSLog(@"------current thread: %@",[NSThread currentThread]);
+//            NSLog(@"------current thread: %@",[NSThread currentThread]);
             if (player->receiveArray.count > 0) {
                 //音量
                 Float32 gain = 1.0;
@@ -136,8 +121,7 @@ void outputCallback (void                 *inUserData,
                 //获取数组的第一个元素
                 NSData *speexData = [player->receiveArray getFirstObject];
                 if (speexData) {
-                    NSData *pcmData = [player decodeToPcmData:speexData];
-//                    NSData *pcmData = [player->spxCodec decodeToPcmDataFromData:speexData];//单帧数据测试 320B
+                    NSData *pcmData = [player->spxCodec decodeToPcmDataFromData:speexData];
                     NSLog(@"pcm data = %lu", pcmData.length);
                     memcpy(inBuffer->mAudioData, pcmData.bytes, pcmData.length);
                     inBuffer->mAudioDataByteSize = (UInt32)pcmData.length;
@@ -156,39 +140,6 @@ void outputCallback (void                 *inUserData,
         });
     }
 }
-//将保存了分割好的speex数据的数组解码成pcm数据
-- (NSData *)decodeToPcmData:(NSData *)speexData {
-    NSMutableData *pcmData = [NSMutableData data];
-    [self cutDataFromData:speexData];
-    while ([[self getSpeexArrs] count] > 0) {
-        NSData *spxData = [[self getSpeexArrs] objectAtIndex:0];
-        NSData *pData = [spxCodec decodeToPcmDataFromData:spxData];
-        [pcmData appendData:pData];
-        [[self getSpeexArrs] removeObjectAtIndex:0];
-    }
-    return pcmData;
-}
-//将接收到的数据分割成小段，每段20byte
-- (void)cutDataFromData:(NSData *)data {
-    int packetSize = FRAME_SIZE * 2 / 16;
-    @synchronized(speexArrs) {
-        [tempData appendData:data];
-        while ([tempData length] >= packetSize) {
-            NSData *spxData = [NSData dataWithBytes:[tempData bytes] length:packetSize];
-            [speexArrs addObject:spxData];
-            Byte *dataPtr = (Byte *)[tempData bytes];
-            dataPtr += packetSize;
-            tempData = [NSMutableData dataWithBytesNoCopy:dataPtr length:tempData.length - packetSize freeWhenDone:NO];
-        }
-    }
-}
-
-- (NSMutableArray *)getSpeexArrs {
-    @synchronized(speexArrs) {
-        return speexArrs;
-    }
-}
-
 //把缓冲区置空
 void makeSilent(AudioQueueBufferRef buffer){
     for (int i = 0; i < buffer->mAudioDataBytesCapacity; i++) {
@@ -220,58 +171,15 @@ void makeSilent(AudioQueueBufferRef buffer){
     }
     [receiveArray addObject:data];
     
-    NSLog(@"<<<<<<<current thread: %@",[NSThread currentThread]);
+//    NSLog(@"<<<<<<<current thread: %@",[NSThread currentThread]);
     NSLog(@"udp socket receive");
     NSLog(@"_receiveData count : %lu",receiveArray.count);
-    NSLog(@"speex data length%ld",(unsigned long)data.length);
+    NSLog(@"speex data length = %ld",(unsigned long)data.length);
 }
 
 - (void)dealloc {
     [udpSocket close];
-    
     udpSocket = nil;
 }
-
-
-- (void)putEmptyBuffer:(AudioQueueBufferRef)buffer {
-    BOOL isInArray = NO;
-    int indexValue = [self checkUsedQueueBuffer:buffer];
-    for (NSNumber *index in emptyAudioQueueBufferIndexs) {
-        if ([index intValue] == indexValue) {
-            isInArray = YES;
-        }
-    }
-    if ( !isInArray) {
-        [emptyAudioQueueBufferIndexs addObject:[NSNumber numberWithInt:indexValue]];
-    }
-}
-
-- (void)removeEmptyBuffer:(AudioQueueBufferRef)buffer {
-    int indexValue = [self checkUsedQueueBuffer:buffer];
-    for (NSNumber *index in emptyAudioQueueBufferIndexs) {
-        if ([index intValue] == indexValue) {
-            [emptyAudioQueueBufferIndexs removeObject:index];
-            return;
-        }
-    }
-}
-
-- (int)checkUsedQueueBuffer:(AudioQueueBufferRef)qbuf {
-    int bufferIndex = 0;
-    if(qbuf == outputBuffers[0]) {
-        bufferIndex = 0;
-    }
-    if(qbuf == outputBuffers[1]) {
-        bufferIndex = 1;
-    }
-    if(qbuf == outputBuffers[2]) {
-        bufferIndex = 2;
-    }
-    //    if(qbuf == outputBuffers[3]) {
-    //        bufferIndex = 3;
-    //    }
-    return bufferIndex;
-}
-
 
 @end
