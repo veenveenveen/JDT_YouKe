@@ -10,6 +10,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import "HTSpeexCodec.h"
 #import "HTThreadSafetyArray.h"
+#import "HTEchoCanceller.h"
 
 @implementation HTPlayer {
     AudioStreamBasicDescription mDataFormat;//音频流描述对象  格式化音频数据
@@ -21,15 +22,19 @@
     
     GCDAsyncUdpSocket *udpSocket;
     
-    HTSpeexCodec *spxCodec;
     HTThreadSafetyArray *receiveArray;//接收数据的数组
+    HTSpeexCodec *spxCodec;//编码器
+    HTEchoCanceller *echoCanceller;//回声消除器
+    
 }
 
 - (instancetype) init{
     self = [super init];
     if (self){
-        spxCodec = [[HTSpeexCodec alloc] init];
+        
         receiveArray = [[HTThreadSafetyArray alloc] init];
+        spxCodec = [[HTSpeexCodec alloc] init];
+        echoCanceller = [[HTEchoCanceller alloc] init];
         
         _decode_queue = dispatch_queue_create("com.JDTYouKe.decodeQueue", DISPATCH_QUEUE_SERIAL);
         
@@ -46,7 +51,6 @@
         if (error != nil) {
             NSLog(@"error:%@",error.description);
         }
-        
         [self initAudioPlaying];
         [self setAudioSession];
     }
@@ -120,6 +124,13 @@ void outputCallback (void                 *inUserData,
                 AudioQueueSetParameter (player->outputQueue,kAudioQueueParam_Volume,gain);
                 //获取数组的第一个元素
                 NSData *speexData = [player->receiveArray getFirstObject];
+                
+                //回声消除
+                //NSMutableData *speexData = [[NSMutableData alloc] initWithData:spxData];
+                
+                //NSData *echoC = [player->echoCanceller doEchoCancellationWith:spxData and:spxData];
+                //[speexData appendData:echoC];
+                
                 if (speexData) {
                     NSData *pcmData = [player->spxCodec decodeToPcmDataFromData:speexData];
                     NSLog(@"pcm data = %lu", pcmData.length);
