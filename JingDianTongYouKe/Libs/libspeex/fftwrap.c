@@ -330,7 +330,7 @@ void spx_fft_float(void *table, float *in, float *out)
 #endif
    for (i=0;i<N;i++)
       _in[i] = (int)floor(.5+in[i]);
-   spx_fft(table, _in, _out);
+   spx_fft(table, _in, _out);//原来没有(float *)
    for (i=0;i<N;i++)
       out[i] = _out[i];
 #if 0

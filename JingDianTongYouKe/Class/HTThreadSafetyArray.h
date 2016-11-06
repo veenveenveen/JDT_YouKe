@@ -20,5 +20,6 @@
 - (void)addObject:(NSData *)obj;
 - (NSData *)getFirstObject;
 - (void)removeFirstObject;
+- (void)removeAll;
 
 @end

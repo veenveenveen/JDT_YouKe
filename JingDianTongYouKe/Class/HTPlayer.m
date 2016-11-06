@@ -19,7 +19,6 @@
     
     dispatch_queue_t _decode_queue;
     dispatch_queue_t _receive_queue;
-    dispatch_queue_t _outputSerialQueue;
     
     GCDAsyncUdpSocket *udpSocket;
     
@@ -41,7 +40,8 @@
         receiveArray = [[HTThreadSafetyArray alloc] init];
         
         _receive_queue = dispatch_queue_create("com.JDTYouKe.receiveQueue", DISPATCH_QUEUE_SERIAL);
-        _outputSerialQueue = dispatch_queue_create("com.JDTYouKe.playcallbackqueue", DISPATCH_QUEUE_SERIAL);
+//        _receive_queue = dispatch_queue_create("com.JDTYouKe.receiveQueue", DISPATCH_QUEUE_CONCURRENT);
+
         
         udpSocket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:_receive_queue];
         NSError *error = nil;
@@ -68,77 +68,46 @@
     udpSocket = nil;
     spxCodec = nil;
     receiveArray = nil;
-    _outputSerialQueue = nil;
 }
 
 #pragma mark - setup AudioQueue and AVAudioSession
 
 //输出回调
 void outputCallback (void *inUserData, AudioQueueRef inAQ, AudioQueueBufferRef inBuffer) {
+    
     HTPlayer *player = (__bridge HTPlayer *)(inUserData);
     
-    dispatch_queue_t serialQueue = player->_outputSerialQueue;
+    if (player->receiveArray.count > 0) {
+        [player setVolume:1.0];
         
-    dispatch_sync(serialQueue, ^{ @autoreleasepool{
-        if (player->receiveArray.count > 0) {
-            [player setVolume:1.0];
+        //获取数组的第一个元素
+        NSData *speexData = [player->receiveArray getFirstObject];
+        if (speexData) {
             
-            //获取数组的第一个元素
-            NSData *speexData = [player->receiveArray getFirstObject];
-            if (speexData) {
-                NSData *pcmData = [player->spxCodec decodeToPcmDataFromData:speexData];
-                                
-                memcpy(inBuffer->mAudioData, pcmData.bytes, pcmData.length);
-                
-                inBuffer->mAudioDataByteSize = (UInt32)pcmData.length;
-            }
-            [player->receiveArray removeFirstObject];
-        } else {
-            [player setVolume:0.0];
+            NSData *pcmData = [player->spxCodec decodeToPcmDataFromData:speexData];
+            
+            memcpy(inBuffer->mAudioData, pcmData.bytes, pcmData.length);
+            
+            inBuffer->mAudioDataByteSize = (UInt32)pcmData.length;
         }
         
-        OSStatus errorStatus = AudioQueueEnqueueBuffer(player->outputQueue, inBuffer, 0, NULL);
-        if (errorStatus) {
-            NSLog(@"MyInputBufferHandler error:%d", (int)errorStatus);
-            return;
-        }
-    }});
-}
-
-//设置录音格式
-- (void)setAudioFormat:(UInt32)inFormatID andSampleRate:(int)sampleRate{
-    //重置
-    memset(&mDataFormat, 0, sizeof(mDataFormat));
-    mDataFormat.mSampleRate = sampleRate;// 采样率 (立体声 = 8000)
-    mDataFormat.mFormatID = inFormatID;// PCM 格式 kAudioFormatLinearPCM
-    mDataFormat.mChannelsPerFrame = 1;//设置通道数 1:单声道；2:立体声
-    //每个通道里，一帧采集的bit数目
-    mDataFormat.mBitsPerChannel = 16;// 语音每采样点占用位数//结果分析: 8bit为1byte，即为1个通道里1帧需要采集2byte数据，再*通道数，即为所有通道采集的byte
-    mDataFormat.mBytesPerFrame = 2;
-    mDataFormat.mFramesPerPacket = 1;//每一个packet一侦数据
-    mDataFormat.mBytesPerPacket = 2;// 16/8*1 = 2() (_recordFormat.mBitsPerChannel / 8) * _recordFormat.mChannelsPerFrame
-    if (inFormatID == kAudioFormatLinearPCM) {
-        mDataFormat.mFormatFlags = kLinearPCMFormatFlagIsSignedInteger | kLinearPCMFormatFlagIsPacked;
+        [player->receiveArray removeFirstObject];
+        
+    } else {
+        
+        [player setVolume:0.0];
     }
-}
-// 设置音量
-- (void)setVolume:(Float32)volume {
-    AudioQueueSetParameter (outputQueue, kAudioQueueParam_Volume, volume);
-}
-
-//把缓冲区置空
-- (void) makeSilent:(AudioQueueBufferRef)buffer {
-    buffer->mAudioDataByteSize = buffer->mAudioDataBytesCapacity;
     
-    UInt8 * samples = (UInt8 *) buffer->mAudioData;
-    for (int i = 0; i < buffer->mAudioDataBytesCapacity; i++) {
-        samples[i]=0;
+    OSStatus errorStatus = AudioQueueEnqueueBuffer(player->outputQueue, inBuffer, 0, NULL);
+    if (errorStatus) {
+        NSLog(@"MyInputBufferHandler error:%d", (int)errorStatus);
+        return;
     }
 }
 
 - (void)setupAudioPlaying{
     //设置录音格式
-    [self setAudioFormat:kAudioFormatLinearPCM andSampleRate:kSamplingRate];
+    [self setupAudioFormat:kAudioFormatLinearPCM andSampleRate:kSamplingRate];
     
     // 创建一个新的从audioqueue到硬件层的通道; 使用player的内部线程播
     AudioQueueNewOutput(&mDataFormat, outputCallback, (__bridge void *) self, nil, nil, 0, &outputQueue);
@@ -164,6 +133,36 @@ void outputCallback (void *inUserData, AudioQueueRef inAQ, AudioQueueBufferRef i
     
     //开启播放队列
     AudioQueueStart(outputQueue,NULL);
+}
+
+//设置录音格式
+- (void)setupAudioFormat:(UInt32)inFormatID andSampleRate:(int)sampleRate{
+    //重置
+    memset(&mDataFormat, 0, sizeof(mDataFormat));
+    mDataFormat.mSampleRate = sampleRate;// 采样率 (立体声 = 8000)
+    mDataFormat.mFormatID = inFormatID;// PCM 格式 kAudioFormatLinearPCM
+    mDataFormat.mChannelsPerFrame = 1;//设置通道数 1:单声道；2:立体声
+    //每个通道里，一帧采集的bit数目
+    mDataFormat.mBitsPerChannel = 16;// 语音每采样点占用位数//结果分析: 8bit为1byte，即为1个通道里1帧需要采集2byte数据，再*通道数，即为所有通道采集的byte
+    mDataFormat.mBytesPerFrame = 2;
+    mDataFormat.mFramesPerPacket = 1;//每一个packet一侦数据
+    mDataFormat.mBytesPerPacket = 2;// 16/8*1 = 2() (_recordFormat.mBitsPerChannel / 8) * _recordFormat.mChannelsPerFrame
+    if (inFormatID == kAudioFormatLinearPCM) {
+        mDataFormat.mFormatFlags = kLinearPCMFormatFlagIsSignedInteger | kLinearPCMFormatFlagIsPacked;
+    }
+}
+// 设置音量
+- (void)setVolume:(Float32)volume {
+    AudioQueueSetParameter (outputQueue, kAudioQueueParam_Volume, volume);
+}
+
+//把缓冲区置空
+- (void) makeSilent:(AudioQueueBufferRef)buffer {
+    buffer->mAudioDataByteSize = buffer->mAudioDataBytesCapacity;
+    UInt8 * samples = (UInt8 *) buffer->mAudioData;
+    for (int i = 0; i < buffer->mAudioDataBytesCapacity; i++) {
+        samples[i]=0;
+    }
 }
 
 - (void)setupAudioSession {
@@ -193,6 +192,9 @@ void outputCallback (void *inUserData, AudioQueueRef inAQ, AudioQueueBufferRef i
         self.isplaying = NO;
         
         [self setVolume:0.0];
+        
+        //删除数组中所有的数据
+        [receiveArray removeAll];
     }
 }
 
@@ -203,7 +205,10 @@ void outputCallback (void *inUserData, AudioQueueRef inAQ, AudioQueueBufferRef i
         return;
     }
     
-    [receiveArray addObject:data];
+    if (receiveArray.count < 5) {//会接收不到某些数据 但基本不会影响语音流畅度 需要改善
+//        [receiveArray removeAll];
+        [receiveArray addObject:data];
+    }
     
     NSLog(@"udp socket receive data len = %lu; waiting count : %lu", (unsigned long)data.length, (unsigned long)receiveArray.count);
 }

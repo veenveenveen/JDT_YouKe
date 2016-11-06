@@ -39,11 +39,30 @@
         }
     }
 }
+//获取第二个元素
+- (NSData *)getSecondObject {
+    @synchronized (self) {
+        if (_array.count > 1) {
+            return [_array objectAtIndex:1];
+        }
+        else {
+            return nil;
+        }
+    }
+}
 //删除第一个元素
 - (void)removeFirstObject {
     @synchronized (self) {
         if (_array.count > 0) {
             [_array removeObjectAtIndex:0];
+        }
+    }
+}
+//删除所有的元素
+- (void)removeAll {
+    @synchronized (self) {
+        if (_array.count > 0) {
+            [_array removeAllObjects];
         }
     }
 }
