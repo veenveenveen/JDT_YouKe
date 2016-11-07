@@ -13,5 +13,7 @@
 
 @property (nonatomic, strong) HTPlayer *player;
 
+- (IBAction)playOrPause:(id)sender;
+
 @end
 

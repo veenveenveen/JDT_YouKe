@@ -15,7 +15,7 @@
 //采样率为8000
 #define kSamplingRate 8000
 #define kDefaultOutputBufferSize 1920
-#define MIN_SIZE_PER_FRAME 1000//每侦最小数据长
+#define MIN_SIZE_PER_FRAME 800//每侦最小数据长
 #define FRAME_SIZE 160 // PCM音频8khz*20ms -> 8000*0.02=160
 //ip地址
 #define kDefaultIP @"234.5.6.1"

@@ -24,7 +24,6 @@
     
     HTThreadSafetyArray *receiveArray;//接收数据的数组
     HTSpeexCodec *spxCodec;//编码器
-    HTEchoCanceller *echoCanceller;//回声消除器
     
 }
 
@@ -35,7 +34,6 @@
     if (self){
         
         spxCodec = [[HTSpeexCodec alloc] init];
-        echoCanceller = [[HTEchoCanceller alloc] init];
         
         receiveArray = [[HTThreadSafetyArray alloc] init];
         
@@ -56,7 +54,7 @@
             NSLog(@"error:%@",error.description);
         }
 
-        [self setupAudioPlaying];
+//        [self setupAudioPlaying];
         [self setupAudioSession];
 
     }
@@ -82,6 +80,7 @@ void outputCallback (void *inUserData, AudioQueueRef inAQ, AudioQueueBufferRef i
         
         //获取数组的第一个元素
         NSData *speexData = [player->receiveArray getFirstObject];
+        
         if (speexData) {
             
             NSData *pcmData = [player->spxCodec decodeToPcmDataFromData:speexData];
@@ -94,7 +93,6 @@ void outputCallback (void *inUserData, AudioQueueRef inAQ, AudioQueueBufferRef i
         [player->receiveArray removeFirstObject];
         
     } else {
-        
         [player setVolume:0.0];
     }
     
@@ -182,7 +180,7 @@ void outputCallback (void *inUserData, AudioQueueRef inAQ, AudioQueueBufferRef i
 - (void)startPlaying{
     if(!self.isplaying){
         self.isplaying = YES;
-
+        [self setupAudioPlaying];
         [self setVolume:1.0];
     }
 }

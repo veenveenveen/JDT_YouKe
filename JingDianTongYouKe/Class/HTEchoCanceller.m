@@ -73,13 +73,14 @@
 }
 
 - (NSData *)doEchoCancellationWith:(NSData *)mic and:(NSData *)ref {
+    
+    [self initWithFrameSize:0 andFilterLength:0 andSampleRate:0];
     if (!isInit) {
         return nil;
     }
-    [self initWithFrameSize:0 andFilterLength:0 andSampleRate:0];
     NSMutableData *output = [NSMutableData data];
     speex_echo_cancel(echoState, (short *)mic.bytes, (short *)ref.bytes, (short *)output.bytes, pNoise);
-    speex_preprocess(preprocessorState, (short *)output.bytes, pNoise);
+//    speex_preprocess(preprocessorState, (short *)output.bytes, pNoise);
     
     return output;
 }

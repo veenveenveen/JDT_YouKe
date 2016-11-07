@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="vc" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -19,19 +22,21 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EJA-r6-3C8" userLabel="TopView">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="547"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background" translatesAutoresizingMaskIntoConstraints="NO" id="rpb-tU-Non"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background" translatesAutoresizingMaskIntoConstraints="NO" id="rpb-tU-Non">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="547"/>
+                                    </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3lx-zV-DMz">
+                                        <rect key="frame" x="150" y="199" width="75" height="109"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="109" id="8CD-ao-gQD"/>
                                             <constraint firstAttribute="width" constant="75" id="fau-oW-CgZ"/>
                                         </constraints>
                                         <state key="normal" image="record_false"/>
-                                        <connections>
-                                            <action selector="playOrPause:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gKN-Cv-lFo"/>
-                                        </connections>
                                     </button>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="正在播放..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sTO-T4-zB9">
+                                        <rect key="frame" x="146" y="328" width="83.5" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
@@ -50,6 +55,7 @@
                                 </constraints>
                             </view>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_five" translatesAutoresizingMaskIntoConstraints="NO" id="Ppi-T9-cLs">
+                                <rect key="frame" x="0.0" y="547" width="375" height="120"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="120" id="rr6-D4-7M0"/>
                                 </constraints>
@@ -63,16 +69,13 @@
                             <constraint firstItem="EJA-r6-3C8" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="RcN-1y-5Hw"/>
                             <constraint firstAttribute="trailing" secondItem="EJA-r6-3C8" secondAttribute="trailing" id="eNr-Bf-fPi"/>
                             <constraint firstItem="EJA-r6-3C8" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="hGu-hh-NB6"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Ppi-T9-cLs" secondAttribute="bottom" id="vlo-NB-Tdp"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Ppi-T9-cLs" secondAttribute="bottom" id="nC0-5X-mWT"/>
                         </constraints>
                     </view>
-                    <connections>
-                        <outlet property="playButton" destination="3lx-zV-DMz" id="NEa-Ny-9co"/>
-                        <outlet property="promptLable" destination="sTO-T4-zB9" id="UbD-61-VMk"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="-6890" y="-149"/>
         </scene>
     </scenes>
     <resources>

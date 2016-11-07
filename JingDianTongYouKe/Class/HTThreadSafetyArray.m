@@ -39,14 +39,32 @@
         }
     }
 }
-//获取第二个元素
-- (NSData *)getSecondObject {
+//获取第n个元素
+- (NSData *)getObjectAtIndex:(int)index {
     @synchronized (self) {
-        if (_array.count > 1) {
-            return [_array objectAtIndex:1];
+        if (_array.count > index) {
+            return [_array objectAtIndex:index];
         }
         else {
             return nil;
+        }
+    }
+}
+//删除第n个元素
+- (void)removeObjAtIndex:(int)index {
+    @synchronized (self) {
+        if (_array.count > index) {
+            [_array removeObjectAtIndex:index];
+        }
+    }
+}
+//在index位置插入元素
+- (void)insertObj:(NSData *)data atIndex:(int)index {
+    @synchronized (self) {
+        if (_array.count > index) {
+            if (data) {
+                [_array insertObject:data atIndex:index];
+            }
         }
     }
 }

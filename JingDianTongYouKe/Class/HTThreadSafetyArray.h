@@ -18,8 +18,15 @@
 @property (nonatomic, assign) NSUInteger count;
 
 - (void)addObject:(NSData *)obj;
+
 - (NSData *)getFirstObject;
 - (void)removeFirstObject;
+
+- (NSData *)getObjectAtIndex:(int)index;
+
+- (void)insertObj:(NSData *)data atIndex:(int)index;
+- (void)removeObjAtIndex:(int)index;
+
 - (void)removeAll;
 
 @end
