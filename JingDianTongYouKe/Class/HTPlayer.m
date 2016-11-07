@@ -72,34 +72,37 @@
 
 //输出回调
 void outputCallback (void *inUserData, AudioQueueRef inAQ, AudioQueueBufferRef inBuffer) {
-    
-    HTPlayer *player = (__bridge HTPlayer *)(inUserData);
-    
-    if (player->receiveArray.count > 0) {
-        [player setVolume:1.0];
+    @autoreleasepool {
         
-        //获取数组的第一个元素
-        NSData *speexData = [player->receiveArray getFirstObject];
+        HTPlayer *player = (__bridge HTPlayer *)(inUserData);
         
-        if (speexData) {
+        if (player->receiveArray.count > 0) {
+            [player setVolume:1.0];
             
-            NSData *pcmData = [player->spxCodec decodeToPcmDataFromData:speexData];
+            //获取数组的第一个元素
+            NSData *speexData = [player->receiveArray getFirstObject];
             
-            memcpy(inBuffer->mAudioData, pcmData.bytes, pcmData.length);
+            if (speexData) {
+                
+                NSData *pcmData = [player->spxCodec decodeToPcmDataFromData:speexData];
+                
+                memcpy(inBuffer->mAudioData, pcmData.bytes, pcmData.length);
+                
+                inBuffer->mAudioDataByteSize = (UInt32)pcmData.length;
+            }
             
-            inBuffer->mAudioDataByteSize = (UInt32)pcmData.length;
+            [player->receiveArray removeFirstObject];
+            
+        } else {
+            [player setVolume:0.0];
         }
         
-        [player->receiveArray removeFirstObject];
+        OSStatus errorStatus = AudioQueueEnqueueBuffer(player->outputQueue, inBuffer, 0, NULL);
+        if (errorStatus) {
+            NSLog(@"MyInputBufferHandler error:%d", (int)errorStatus);
+            return;
+        }
         
-    } else {
-        [player setVolume:0.0];
-    }
-    
-    OSStatus errorStatus = AudioQueueEnqueueBuffer(player->outputQueue, inBuffer, 0, NULL);
-    if (errorStatus) {
-        NSLog(@"MyInputBufferHandler error:%d", (int)errorStatus);
-        return;
     }
 }
 
@@ -114,7 +117,7 @@ void outputCallback (void *inUserData, AudioQueueRef inAQ, AudioQueueBufferRef i
      * 创建buffer区，MIN_SIZE_PER_FRAME为每一侦所需要的最小的大小，该大小应该比每次往buffer里写的最大的一次还大
      */
     for (int i = 0; i < kNumberBuffers; ++i){
-        AudioQueueAllocateBuffer(outputQueue, MIN_SIZE_PER_FRAME, &outputBuffers[i]);
+        AudioQueueAllocateBuffer(outputQueue, kDefaultOutputBufferSize, &outputBuffers[i]);
     }
     for (int i = 0; i < kNumberBuffers; ++i) {
         //重置缓冲区的大小，并把内容置为0
@@ -141,12 +144,12 @@ void outputCallback (void *inUserData, AudioQueueRef inAQ, AudioQueueBufferRef i
     mDataFormat.mFormatID = inFormatID;// PCM 格式 kAudioFormatLinearPCM
     mDataFormat.mChannelsPerFrame = 1;//设置通道数 1:单声道；2:立体声
     //每个通道里，一帧采集的bit数目
-    mDataFormat.mBitsPerChannel = 16;// 语音每采样点占用位数//结果分析: 8bit为1byte，即为1个通道里1帧需要采集2byte数据，再*通道数，即为所有通道采集的byte
     mDataFormat.mBytesPerFrame = 2;
-    mDataFormat.mFramesPerPacket = 1;//每一个packet一侦数据
-    mDataFormat.mBytesPerPacket = 2;// 16/8*1 = 2() (_recordFormat.mBitsPerChannel / 8) * _recordFormat.mChannelsPerFrame
     if (inFormatID == kAudioFormatLinearPCM) {
         mDataFormat.mFormatFlags = kLinearPCMFormatFlagIsSignedInteger | kLinearPCMFormatFlagIsPacked;
+        mDataFormat.mBitsPerChannel = 16;// 语音每采样点占用位数//结果分析: 8bit为1byte，即为1个通道里1帧需要采集2byte数据，再*通道数，即为所有通道采集的byte
+        mDataFormat.mBytesPerPacket = 2;// 16/8*1 = 2()
+        mDataFormat.mFramesPerPacket = 1;//每一个packet一侦数据
     }
 }
 // 设置音量

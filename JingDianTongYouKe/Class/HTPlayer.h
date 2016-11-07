@@ -10,13 +10,11 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import "GCDAsyncUdpSocket.h"
 
-//定义缓冲区
+//缓冲区
 #define kNumberBuffers 3
 //采样率为8000
 #define kSamplingRate 8000
-#define kDefaultOutputBufferSize 1920
-#define MIN_SIZE_PER_FRAME 800//每侦最小数据长
-#define FRAME_SIZE 160 // PCM音频8khz*20ms -> 8000*0.02=160
+#define kDefaultOutputBufferSize 640
 //ip地址
 #define kDefaultIP @"234.5.6.1"
 //#define kDefaultIP @"255.255.255.255"
