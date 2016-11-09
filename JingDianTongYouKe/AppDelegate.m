@@ -7,7 +7,6 @@
 //
 
 #import "AppDelegate.h"
-#import <AudioToolbox/AudioSession.h>
 
 @interface AppDelegate ()
 
@@ -27,9 +26,6 @@
     self.window.rootViewController = self.vc;
     
     [self.window makeKeyAndVisible];
-
-    //来电监听
-    AudioSessionInitialize(NULL, NULL, interruptionListenner, (__bridge void *)(self));
     
     return YES;
 }
@@ -47,21 +43,6 @@
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
-}
-
-void interruptionListenner(void *inClientData, UInt32 inInterruptionState) {
-    AppDelegate *app = (__bridge AppDelegate *)(inClientData);
-    if (app) {
-        
-        if (kAudioSessionBeginInterruption == inInterruptionState) {
-            NSLog(@"interruptionListenner state =========================== %u", (unsigned int)inInterruptionState);
-            [app.self.vc playOrPause:nil];
-        }
-        else {
-             NSLog(@"interruptionListenner state ------------ %u", (unsigned int)inInterruptionState);
-            [app.self.vc playOrPause:nil];
-        }
-    }
 }
 
 @end

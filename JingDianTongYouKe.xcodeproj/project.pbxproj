@@ -16,6 +16,7 @@
 		90443E9D1D585464005D91CE /* HTPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 90443E9C1D585464005D91CE /* HTPlayer.m */; };
 		904B5B431DD024FF00C01D8A /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 904B5B421DD024FF00C01D8A /* ViewController.xib */; };
 		904B5B461DD03F9D00C01D8A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 904B5B441DD03F9D00C01D8A /* Main.storyboard */; };
+		9054B1F61DD31CA600D30E17 /* HTShowStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9054B1F51DD31CA600D30E17 /* HTShowStatusView.m */; };
 		909BD1361DC71F01005F540D /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 909BD1351DC71F01005F540D /* libstdc++.tbd */; };
 		909BD1381DC71F48005F540D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 909BD1371DC71F48005F540D /* AVFoundation.framework */; };
 		909BD13A1DC71F4F005F540D /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 909BD1391DC71F4F005F540D /* AudioToolbox.framework */; };
@@ -85,6 +86,8 @@
 		90443E9C1D585464005D91CE /* HTPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTPlayer.m; sourceTree = "<group>"; };
 		904B5B421DD024FF00C01D8A /* ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
 		904B5B451DD03F9D00C01D8A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		9054B1F41DD31CA600D30E17 /* HTShowStatusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTShowStatusView.h; sourceTree = "<group>"; };
+		9054B1F51DD31CA600D30E17 /* HTShowStatusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTShowStatusView.m; sourceTree = "<group>"; };
 		909BD1301DC71B8A005F540D /* OggSpeex-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OggSpeex-Prefix.pch"; sourceTree = "<group>"; };
 		909BD1351DC71F01005F540D /* libstdc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.tbd"; path = "usr/lib/libstdc++.tbd"; sourceTree = SDKROOT; };
 		909BD1371DC71F48005F540D /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -253,6 +256,7 @@
 		903C91071D3000F5000EAF08 /* JingDianTongYouKe */ = {
 			isa = PBXGroup;
 			children = (
+				909A04DA1DD2C7A700817EC1 /* Common */,
 				909FF8501DCC49EE004C1F2C /* Libs */,
 				90AC645F1D3351F20020CB76 /* Class */,
 				903C910B1D3000F5000EAF08 /* AppDelegate.h */,
@@ -275,6 +279,22 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		9054B1ED1DD2F17C00D30E17 /* Echo */ = {
+			isa = PBXGroup;
+			children = (
+				90A8E0F11DCCB500003FDAD5 /* HTEchoCanceller.h */,
+				90A8E0F21DCCB500003FDAD5 /* HTEchoCanceller.m */,
+			);
+			name = Echo;
+			sourceTree = "<group>";
+		};
+		909A04DA1DD2C7A700817EC1 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Common;
+			sourceTree = "<group>";
+		};
 		909FF8341DCC222C004C1F2C /* Resourses */ = {
 			isa = PBXGroup;
 			children = (
@@ -287,6 +307,8 @@
 		909FF8351DCC2253004C1F2C /* View */ = {
 			isa = PBXGroup;
 			children = (
+				9054B1F41DD31CA600D30E17 /* HTShowStatusView.h */,
+				9054B1F51DD31CA600D30E17 /* HTShowStatusView.m */,
 				904B5B441DD03F9D00C01D8A /* Main.storyboard */,
 				903C91161D3000F5000EAF08 /* LaunchScreen.storyboard */,
 				904B5B421DD024FF00C01D8A /* ViewController.xib */,
@@ -451,10 +473,9 @@
 			isa = PBXGroup;
 			children = (
 				909FF8481DCC4965004C1F2C /* Codec */,
+				9054B1ED1DD2F17C00D30E17 /* Echo */,
 				909FFA4D1DCC525D004C1F2C /* HTThreadSafetyArray.h */,
 				909FFA4E1DCC525D004C1F2C /* HTThreadSafetyArray.m */,
-				90A8E0F11DCCB500003FDAD5 /* HTEchoCanceller.h */,
-				90A8E0F21DCCB500003FDAD5 /* HTEchoCanceller.m */,
 				90443E9B1D585464005D91CE /* HTPlayer.h */,
 				90443E9C1D585464005D91CE /* HTPlayer.m */,
 			);
@@ -595,6 +616,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				909FF8DE1DCC49EF004C1F2C /* ltp.c in Sources */,
+				9054B1F61DD31CA600D30E17 /* HTShowStatusView.m in Sources */,
 				909FF8D21DCC49EF004C1F2C /* filters.c in Sources */,
 				90443E9D1D585464005D91CE /* HTPlayer.m in Sources */,
 				909FF8D01DCC49EF004C1F2C /* fftwrap.c in Sources */,
@@ -768,13 +790,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-ObjC",
-					"-l\"CocoaAsyncSocket\"",
-					"-framework",
-					"\"CFNetwork\"",
-				);
+				OTHER_LDFLAGS = "$(inherited)";
+				PODS_ROOT = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.huatengIOT.JingDianTongYouKe;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -791,13 +808,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-ObjC",
-					"-l\"CocoaAsyncSocket\"",
-					"-framework",
-					"\"CFNetwork\"",
-				);
+				OTHER_LDFLAGS = "$(inherited)";
+				PODS_ROOT = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.huatengIOT.JingDianTongYouKe;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

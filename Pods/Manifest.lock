@@ -1,7 +1,7 @@
 PODS:
-  - CocoaAsyncSocket (7.5.0):
-    - CocoaAsyncSocket/GCD (= 7.5.0)
-  - CocoaAsyncSocket/GCD (7.5.0)
+  - CocoaAsyncSocket (7.5.1):
+    - CocoaAsyncSocket/GCD (= 7.5.1)
+  - CocoaAsyncSocket/GCD (7.5.1)
 
 DEPENDENCIES:
   - CocoaAsyncSocket (from `https://github.com/robbiehanson/CocoaAsyncSocket.git`)
@@ -12,12 +12,12 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   CocoaAsyncSocket:
-    :commit: a65dc7e3503d53b1129f727d6db4461e88ba5e0f
+    :commit: f3cf8a6fb27de57bd70b40cf4173d695d4a17b22
     :git: https://github.com/robbiehanson/CocoaAsyncSocket.git
 
 SPEC CHECKSUMS:
-  CocoaAsyncSocket: 3baeb1ddd969f81cf9fca81053ae49ef2d1cbbfa
+  CocoaAsyncSocket: e0a7e93b2ffa411592ff87e58524fbbc9b95b4fa
 
-PODFILE CHECKSUM: 10d58847896eeb61a34c4b3e552c4f8ec33f5bde
+PODFILE CHECKSUM: c291eeb589327d1e1c8cd6e81b7b7d8f5d363133
 
 COCOAPODS: 1.0.1

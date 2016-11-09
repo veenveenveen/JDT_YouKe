@@ -7,10 +7,12 @@
 //
 
 #import "HTPlayer.h"
-#import <AVFoundation/AVFoundation.h>
 #import "HTSpeexCodec.h"
 #import "HTThreadSafetyArray.h"
 #import "HTEchoCanceller.h"
+
+@interface HTPlayer()
+@end
 
 @implementation HTPlayer {
     AudioStreamBasicDescription mDataFormat;//音频流描述对象  格式化音频数据
@@ -25,6 +27,7 @@
     HTThreadSafetyArray *receiveArray;//接收数据的数组
     HTSpeexCodec *spxCodec;//编码器
     
+    int j;
 }
 
 #pragma mark - life cycle
@@ -33,13 +36,13 @@
     self = [super init];
     if (self){
         
+        j = 0;
+        
         spxCodec = [[HTSpeexCodec alloc] init];
         
         receiveArray = [[HTThreadSafetyArray alloc] init];
         
         _receive_queue = dispatch_queue_create("com.JDTYouKe.receiveQueue", DISPATCH_QUEUE_SERIAL);
-//        _receive_queue = dispatch_queue_create("com.JDTYouKe.receiveQueue", DISPATCH_QUEUE_CONCURRENT);
-
         
         udpSocket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:_receive_queue];
         NSError *error = nil;
@@ -54,9 +57,7 @@
             NSLog(@"error:%@",error.description);
         }
 
-//        [self setupAudioPlaying];
-        [self setupAudioSession];
-
+        [self setupAudioPlaying];
     }
     return self;
 }
@@ -74,6 +75,8 @@
 void outputCallback (void *inUserData, AudioQueueRef inAQ, AudioQueueBufferRef inBuffer) {
     @autoreleasepool {
         
+        //NSLog(@"播放回调");
+        
         HTPlayer *player = (__bridge HTPlayer *)(inUserData);
         
         if (player->receiveArray.count > 0) {
@@ -81,7 +84,7 @@ void outputCallback (void *inUserData, AudioQueueRef inAQ, AudioQueueBufferRef i
             
             //获取数组的第一个元素
             NSData *speexData = [player->receiveArray getFirstObject];
-            
+            [player->receiveArray removeFirstObject];
             if (speexData) {
                 
                 NSData *pcmData = [player->spxCodec decodeToPcmDataFromData:speexData];
@@ -91,7 +94,7 @@ void outputCallback (void *inUserData, AudioQueueRef inAQ, AudioQueueBufferRef i
                 inBuffer->mAudioDataByteSize = (UInt32)pcmData.length;
             }
             
-            [player->receiveArray removeFirstObject];
+            //[player->receiveArray removeFirstObject];
             
         } else {
             [player setVolume:0.0];
@@ -166,24 +169,15 @@ void outputCallback (void *inUserData, AudioQueueRef inAQ, AudioQueueBufferRef i
     }
 }
 
-- (void)setupAudioSession {
-    //音频会话
-    AVAudioSession *session = [AVAudioSession sharedInstance];
-    
-    //设置会话类型(后台播放)
-    [session setCategory:AVAudioSessionCategoryPlayback error:nil];
-    
-    //激活会话
-    [session setActive:YES error:nil];
-}
-
 #pragma mark - start and stop methods
 
 //开始
 - (void)startPlaying{
     if(!self.isplaying){
         self.isplaying = YES;
-        [self setupAudioPlaying];
+        
+        AudioQueueStart(outputQueue, NULL);
+        
         [self setVolume:1.0];
     }
 }
@@ -193,7 +187,7 @@ void outputCallback (void *inUserData, AudioQueueRef inAQ, AudioQueueBufferRef i
         self.isplaying = NO;
         
         [self setVolume:0.0];
-        
+
         //删除数组中所有的数据
         [receiveArray removeAll];
     }
@@ -206,14 +200,16 @@ void outputCallback (void *inUserData, AudioQueueRef inAQ, AudioQueueBufferRef i
         return;
     }
     
-    if (receiveArray.count < 5) {//会接收不到某些数据 但基本不会影响语音流畅度 需要改善
-//        [receiveArray removeAll];
+    if (receiveArray.count < 6) {//会接收不到某些数据 但基本不会影响语音流畅度 需要改善
         [receiveArray addObject:data];
     }
     
     NSLog(@"udp socket receive data len = %lu; waiting count : %lu", (unsigned long)data.length, (unsigned long)receiveArray.count);
+    
+    
+    //test
+    //[data getBytes: &j length: sizeof(int)];
+    //NSLog(@"receive number = %d",j);
 }
-
-
 
 @end
