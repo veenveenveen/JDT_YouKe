@@ -10,49 +10,40 @@
 
 @implementation HTEchoCanceller {
     
-    
     SpeexEchoState *echoState;
-    SpeexPreprocessState *preprocessState;
+    SpeexPreprocessState *preprocessorState;
     
-    /* 初始化回音消除参数
-     *  frameSize      帧长      一般都是  80,160,320
-     *  filterLen      尾长      一般都是  80*25 ,160*25 ,320*25
-     *  sampleRate     采样频率   一般都是  8000，16000，32000
-     * 比如初始化
-     *  InitAudioAEC(80, 80*25,8000)   //8K，10毫秒采样一次
-     *  InitAudioAEC(160,160*25,16000) //16K，10毫秒采样一次
-     *  InitAudioAEC(320,320*25,32000) //32K，10毫秒采样一次
-     */
+    BOOL isInit;
+
     int frameSize;
     int filterLen;
     int sampleRate;
-    
-//    int sampleTimeLong;//采样时长
-    
-    int arg;
-    
     int *pNoise;
 }
-
-#pragma mark - life circle
 
 - (instancetype)init {
     self = [super init];
     if (self) {
-        [self initWithFrameSize:160 andFilterLength:80*25 andSampleRate:8000];
+        echoState = nil;
+        preprocessorState = nil;
+        
+        isInit = false;
+        
+        frameSize = 160;
+        filterLen = 160*8;
+        sampleRate = 8000;
+        pNoise = nil;
     }
     return self;
 }
 
-- (void)dealloc {
-    speex_echo_state_destroy(echoState);
-    speex_echo_state_reset(echoState);
-}
-
 - (void)initWithFrameSize:(int)size andFilterLength:(int)length andSampleRate:(int)rate {
+    
+    [self reset];
+    
     if (size <= 0 || length <= 0 || rate <= 0){
-        frameSize = 160;
-        filterLen = 80*25;
+        frameSize =160;
+        filterLen = 160*8;
         sampleRate = 8000;
     }
     else{
@@ -61,59 +52,37 @@
         sampleRate = rate;
     }
     
-    //计算采样时长，即是10毫秒，还是20毫秒，还是30毫秒
-//    sampleTimeLong = (frameSize / (sampleRate / 100)) * 10;
-    
-
     echoState = speex_echo_state_init(frameSize, filterLen);
-    
-    preprocessState = speex_preprocess_state_init(frameSize, sampleRate);
-    
-    arg = sampleRate;
-    
-    speex_echo_ctl(echoState, SPEEX_ECHO_SET_SAMPLING_RATE, &arg);
-    
-    speex_preprocess_ctl(preprocessState, SPEEX_PREPROCESS_SET_ECHO_STATE, echoState);
+    pNoise = &pNoise[frameSize+1];
+    isInit = true;
 }
 
-#pragma mark - 回声消除方法
-
-- (NSData *)doEchoCancellationWith:(NSData *)new and:(NSData *)old {
-    
-    
-    short input_frame[160];
-    
-    short echo_frame[160];
-    
-    short output_frame[160];
-    
-    NSUInteger packetSize = 160 * sizeof(short);
-    
-    NSData *newdata = nil;
-    NSData *olddata = nil;
-    
-    NSMutableData *outputData = [NSMutableData data];
-    
-    for (NSUInteger i=0; i<new.length; i=i+packetSize) {
-        
-        NSUInteger remain = new.length - i;
-        
-        if (remain < packetSize) {
-            newdata = [new subdataWithRange:NSMakeRange(i, remain)];
-            olddata = [old subdataWithRange:NSMakeRange(i, remain)];
-        } else {
-            newdata = [new subdataWithRange:NSMakeRange(i, packetSize)];
-            olddata = [old subdataWithRange:NSMakeRange(i, packetSize)];
-        }
-        
-        memcpy(input_frame, newdata.bytes, packetSize);
-        memcpy(echo_frame, olddata.bytes, packetSize);
-        speex_echo_cancel(echoState, input_frame, echo_frame, output_frame, NULL);
-        speex_preprocess_run(preprocessState, output_frame);
-        [outputData appendBytes:output_frame length:packetSize];
+- (void)reset {
+    if (echoState != nil){
+        speex_echo_state_destroy(echoState);
+        echoState = nil;
     }
+    if (preprocessorState != nil){
+        speex_preprocess_state_destroy(preprocessorState);
+        preprocessorState = nil;
+    }
+    if (pNoise != nil){
+        pNoise = nil;
+    }
+    isInit = false;
+}
+
+- (NSData *)doEchoCancellationWith:(NSData *)mic and:(NSData *)ref {
     
-    return outputData;
+    [self initWithFrameSize:0 andFilterLength:0 andSampleRate:0];
+    if (!isInit) {
+        return nil;
+    }
+    NSMutableData *output = [NSMutableData data];
+    speex_echo_cancel(echoState, (short *)mic.bytes, (short *)ref.bytes, (short *)output.bytes, pNoise);
+//    speex_preprocess(preprocessorState, (short *)output.bytes, pNoise);
+    
+    return output;
 }
 
 @end

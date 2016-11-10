@@ -11,7 +11,7 @@
 #import "GCDAsyncUdpSocket.h"
 
 //缓冲区
-#define kNumberBuffers 2
+#define kNumberBuffers 4
 //采样率为8000
 #define kSamplingRate 8000
 #define kDefaultOutputBufferSize 640

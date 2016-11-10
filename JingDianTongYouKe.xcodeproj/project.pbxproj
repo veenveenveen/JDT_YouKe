@@ -67,7 +67,7 @@
 		909FF8F51DCC49EF004C1F2C /* vq.c in Sources */ = {isa = PBXBuildFile; fileRef = 909FF8BE1DCC49EE004C1F2C /* vq.c */; };
 		909FF8F61DCC49EF004C1F2C /* window.c in Sources */ = {isa = PBXBuildFile; fileRef = 909FF8C31DCC49EE004C1F2C /* window.c */; };
 		909FFA4F1DCC525D004C1F2C /* HTThreadSafetyArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 909FFA4E1DCC525D004C1F2C /* HTThreadSafetyArray.m */; };
-		90A907DF1DD419C700B1B733 /* HTEchoCanceller.m in Sources */ = {isa = PBXBuildFile; fileRef = 90A907DE1DD419C700B1B733 /* HTEchoCanceller.m */; };
+		90A8E0F31DCCB500003FDAD5 /* HTEchoCanceller.m in Sources */ = {isa = PBXBuildFile; fileRef = 90A8E0F21DCCB500003FDAD5 /* HTEchoCanceller.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -202,8 +202,8 @@
 		909FF8C31DCC49EE004C1F2C /* window.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = window.c; sourceTree = "<group>"; };
 		909FFA4D1DCC525D004C1F2C /* HTThreadSafetyArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTThreadSafetyArray.h; sourceTree = "<group>"; };
 		909FFA4E1DCC525D004C1F2C /* HTThreadSafetyArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTThreadSafetyArray.m; sourceTree = "<group>"; };
-		90A907DD1DD419C700B1B733 /* HTEchoCanceller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTEchoCanceller.h; sourceTree = "<group>"; };
-		90A907DE1DD419C700B1B733 /* HTEchoCanceller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTEchoCanceller.m; sourceTree = "<group>"; };
+		90A8E0F11DCCB500003FDAD5 /* HTEchoCanceller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTEchoCanceller.h; sourceTree = "<group>"; };
+		90A8E0F21DCCB500003FDAD5 /* HTEchoCanceller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTEchoCanceller.m; sourceTree = "<group>"; };
 		991363960ACD86D99ABCCB0D /* Pods-JingDianTongYouKe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JingDianTongYouKe.release.xcconfig"; path = "Pods/Target Support Files/Pods-JingDianTongYouKe/Pods-JingDianTongYouKe.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -282,8 +282,8 @@
 		9054B1ED1DD2F17C00D30E17 /* Echo */ = {
 			isa = PBXGroup;
 			children = (
-				90A907DD1DD419C700B1B733 /* HTEchoCanceller.h */,
-				90A907DE1DD419C700B1B733 /* HTEchoCanceller.m */,
+				90A8E0F11DCCB500003FDAD5 /* HTEchoCanceller.h */,
+				90A8E0F21DCCB500003FDAD5 /* HTEchoCanceller.m */,
 			);
 			name = Echo;
 			sourceTree = "<group>";
@@ -472,8 +472,8 @@
 		90AC645F1D3351F20020CB76 /* Class */ = {
 			isa = PBXGroup;
 			children = (
-				9054B1ED1DD2F17C00D30E17 /* Echo */,
 				909FF8481DCC4965004C1F2C /* Codec */,
+				9054B1ED1DD2F17C00D30E17 /* Echo */,
 				909FFA4D1DCC525D004C1F2C /* HTThreadSafetyArray.h */,
 				909FFA4E1DCC525D004C1F2C /* HTThreadSafetyArray.m */,
 				90443E9B1D585464005D91CE /* HTPlayer.h */,
@@ -616,7 +616,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				909FF8DE1DCC49EF004C1F2C /* ltp.c in Sources */,
-				90A907DF1DD419C700B1B733 /* HTEchoCanceller.m in Sources */,
 				9054B1F61DD31CA600D30E17 /* HTShowStatusView.m in Sources */,
 				909FF8D21DCC49EF004C1F2C /* filters.c in Sources */,
 				90443E9D1D585464005D91CE /* HTPlayer.m in Sources */,
@@ -647,6 +646,7 @@
 				909FF8E11DCC49EF004C1F2C /* modes_wb.c in Sources */,
 				909FFA4F1DCC525D004C1F2C /* HTThreadSafetyArray.m in Sources */,
 				909FF8D51DCC49EF004C1F2C /* hexc_10_32_table.c in Sources */,
+				90A8E0F31DCCB500003FDAD5 /* HTEchoCanceller.m in Sources */,
 				909FF8D11DCC49EF004C1F2C /* filterbank.c in Sources */,
 				909FF8DA1DCC49EF004C1F2C /* kiss_fftr.c in Sources */,
 				909FF8CF1DCC49EF004C1F2C /* exc_8_128_table.c in Sources */,

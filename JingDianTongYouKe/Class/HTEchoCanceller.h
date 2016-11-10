@@ -12,6 +12,6 @@
 
 @interface HTEchoCanceller : NSObject
 
-- (NSData *)doEchoCancellationWith:(NSData *)new and:(NSData *)old;
+- (NSData *)doEchoCancellationWith:(NSData *)mic and:(NSData *)ref;
 
 @end
