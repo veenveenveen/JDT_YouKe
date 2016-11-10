@@ -9,7 +9,6 @@
 #import "HTPlayer.h"
 #import "HTSpeexCodec.h"
 #import "HTThreadSafetyArray.h"
-#import "HTEchoCanceller.h"
 
 @interface HTPlayer()
 @end
@@ -200,7 +199,7 @@ void outputCallback (void *inUserData, AudioQueueRef inAQ, AudioQueueBufferRef i
         return;
     }
     
-    if (receiveArray.count < 6) {//会接收不到某些数据 但基本不会影响语音流畅度 需要改善
+    if (receiveArray.count < 10) {//会接收不到某些数据 但基本不会影响语音流畅度 需要改善
         [receiveArray addObject:data];
     }
     

@@ -55,7 +55,7 @@
 - (IBAction)playOrPause:(id)sender {
     if (self.player.isplaying) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.playButton setImage:[UIImage imageNamed:@"record_false"] forState:UIControlStateNormal];
+            [self.playButton setImage:[UIImage imageNamed:@"mic0"] forState:UIControlStateNormal];
             self.promptLable.hidden = YES;
         });
         
@@ -64,7 +64,7 @@
     }
     else if (!self.player.isplaying) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.playButton setImage:[UIImage imageNamed:@"record_true"] forState:UIControlStateNormal];
+            [self.playButton setImage:[UIImage imageNamed:@"mic1"] forState:UIControlStateNormal];
             self.promptLable.hidden = NO;
         });
         

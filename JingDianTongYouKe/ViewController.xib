@@ -21,25 +21,25 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IyH-A8-M2t" userLabel="TopView">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="547"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="567"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="background" translatesAutoresizingMaskIntoConstraints="NO" id="vTM-Ne-Si4">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </imageView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aKL-8R-rch">
-                            <rect key="frame" x="150" y="199" width="75" height="109"/>
+                            <rect key="frame" x="136.5" y="176.5" width="102" height="174"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="109" id="KRq-Im-r3I"/>
-                                <constraint firstAttribute="width" constant="75" id="dpd-jy-rgK"/>
+                                <constraint firstAttribute="height" constant="174" id="KRq-Im-r3I"/>
+                                <constraint firstAttribute="width" constant="101.67" id="dpd-jy-rgK"/>
                             </constraints>
-                            <state key="normal" image="record_false"/>
+                            <state key="normal" image="mic0"/>
                             <connections>
                                 <action selector="playOrPause:" destination="-1" eventType="touchUpInside" id="8Di-BW-Zd6"/>
                             </connections>
                         </button>
                         <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="正在播放..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="krd-dB-Hpj">
-                            <rect key="frame" x="146" y="328" width="83.5" height="20.5"/>
+                            <rect key="frame" x="146" y="370.5" width="83.5" height="20.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                             <nil key="highlightedColor"/>
@@ -53,10 +53,10 @@
                         <constraint firstItem="aKL-8R-rch" firstAttribute="centerY" secondItem="IyH-A8-M2t" secondAttribute="centerY" constant="-20" id="cvc-PG-aG6"/>
                     </constraints>
                 </view>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_five" translatesAutoresizingMaskIntoConstraints="NO" id="raG-1E-4ic">
-                    <rect key="frame" x="0.0" y="547" width="375" height="120"/>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="advpic" translatesAutoresizingMaskIntoConstraints="NO" id="raG-1E-4ic">
+                    <rect key="frame" x="0.0" y="567" width="375" height="100"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="120" id="JR8-Iw-QXN"/>
+                        <constraint firstAttribute="height" constant="100" id="JR8-Iw-QXN"/>
                     </constraints>
                 </imageView>
             </subviews>
@@ -75,8 +75,8 @@
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
     </objects>
     <resources>
+        <image name="advpic" width="414" height="100"/>
         <image name="background" width="375" height="667"/>
-        <image name="logo_five" width="801" height="157"/>
-        <image name="record_false" width="75" height="109"/>
+        <image name="mic0" width="305" height="522"/>
     </resources>
 </document>

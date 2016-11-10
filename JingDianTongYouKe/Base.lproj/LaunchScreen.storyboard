@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -18,12 +21,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="lunchBackground" translatesAutoresizingMaskIntoConstraints="NO" id="0ri-Ox-ERF"/>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="record_true" translatesAutoresizingMaskIntoConstraints="NO" id="ltW-RA-BHC">
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="109" id="LeJ-xq-aOM"/>
-                                    <constraint firstAttribute="width" constant="75" id="Ve8-HP-BKM"/>
-                                </constraints>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="lunchBackground" translatesAutoresizingMaskIntoConstraints="NO" id="0ri-Ox-ERF">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -31,8 +30,6 @@
                             <constraint firstItem="0ri-Ox-ERF" firstAttribute="top" secondItem="hHZ-pl-pgU" secondAttribute="top" id="E5q-JG-9qV"/>
                             <constraint firstAttribute="trailing" secondItem="0ri-Ox-ERF" secondAttribute="trailing" id="dFj-p0-otb"/>
                             <constraint firstItem="0ri-Ox-ERF" firstAttribute="leading" secondItem="hHZ-pl-pgU" secondAttribute="leading" id="fYK-vE-MJG"/>
-                            <constraint firstItem="ltW-RA-BHC" firstAttribute="centerX" secondItem="hHZ-pl-pgU" secondAttribute="centerX" id="rsp-0n-jSv"/>
-                            <constraint firstItem="ltW-RA-BHC" firstAttribute="centerY" secondItem="hHZ-pl-pgU" secondAttribute="centerY" id="vLT-a4-XNc"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -43,6 +40,5 @@
     </scenes>
     <resources>
         <image name="lunchBackground" width="375" height="667"/>
-        <image name="record_true" width="75" height="109"/>
     </resources>
 </document>
