@@ -8,9 +8,12 @@
 
 #import "AppDelegate.h"
 
-@interface AppDelegate ()
+@interface AppDelegate () {
+    UIBackgroundTaskIdentifier taskID;
+}
 
 @property (nonatomic, strong) ViewController *vc;
+
 
 @end
 
@@ -34,6 +37,19 @@
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
+//    
+//    if(taskID) {
+//        [application endBackgroundTask:taskID];
+//        taskID = UIBackgroundTaskInvalid;
+//    }
+//    
+//    taskID = [application beginBackgroundTaskWithExpirationHandler:^{
+//        if (!taskID) {
+//            return;
+//        }
+//        [application endBackgroundTask:taskID];
+//        taskID = UIBackgroundTaskInvalid;
+//    }];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {

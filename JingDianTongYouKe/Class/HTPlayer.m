@@ -186,7 +186,7 @@ void outputCallback (void *inUserData, AudioQueueRef inAQ, AudioQueueBufferRef i
         self.isplaying = NO;
         
         [self setVolume:0.0];
-
+        
         //删除数组中所有的数据
         [receiveArray removeAll];
     }
