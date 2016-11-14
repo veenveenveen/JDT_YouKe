@@ -14,6 +14,7 @@
                 <outlet property="playButton" destination="aKL-8R-rch" id="T92-as-KlB"/>
                 <outlet property="promptLable" destination="krd-dB-Hpj" id="ZO3-a4-t7d"/>
                 <outlet property="view" destination="CBv-rD-VtB" id="14U-tH-XbJ"/>
+                <outlet property="webButton" destination="wop-Xu-BeA" id="hJ4-yt-0TK"/>
             </connections>
         </placeholder>
         <view contentMode="scaleToFill" id="CBv-rD-VtB">
@@ -39,7 +40,7 @@
                             </connections>
                         </button>
                         <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="正在播放..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="krd-dB-Hpj">
-                            <rect key="frame" x="146" y="370.5" width="83.5" height="20.5"/>
+                            <rect key="frame" x="145.5" y="370.5" width="84" height="21"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                             <nil key="highlightedColor"/>
@@ -59,12 +60,23 @@
                         <constraint firstAttribute="height" constant="100" id="JR8-Iw-QXN"/>
                     </constraints>
                 </imageView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wop-Xu-BeA">
+                    <rect key="frame" x="281" y="602" width="78" height="30"/>
+                    <state key="normal" title="  点击进入  ">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="clickToWeb:" destination="-1" eventType="touchUpInside" id="UpD-2T-JbC"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="IyH-A8-M2t" firstAttribute="top" secondItem="CBv-rD-VtB" secondAttribute="top" id="0bA-wx-nnr"/>
                 <constraint firstItem="IyH-A8-M2t" firstAttribute="leading" secondItem="CBv-rD-VtB" secondAttribute="leading" id="Klk-ve-jF0"/>
+                <constraint firstItem="wop-Xu-BeA" firstAttribute="centerY" secondItem="raG-1E-4ic" secondAttribute="centerY" id="L6p-R1-CZM"/>
                 <constraint firstAttribute="trailing" secondItem="raG-1E-4ic" secondAttribute="trailing" id="RuO-m7-zJ3"/>
+                <constraint firstAttribute="trailing" secondItem="wop-Xu-BeA" secondAttribute="trailing" constant="16" id="bQi-sk-A7h"/>
                 <constraint firstItem="raG-1E-4ic" firstAttribute="leading" secondItem="CBv-rD-VtB" secondAttribute="leading" id="eeL-JW-gKe"/>
                 <constraint firstItem="raG-1E-4ic" firstAttribute="top" secondItem="IyH-A8-M2t" secondAttribute="bottom" id="hIb-7Y-Wr6"/>
                 <constraint firstAttribute="trailing" secondItem="IyH-A8-M2t" secondAttribute="trailing" id="r7B-Og-yh6"/>

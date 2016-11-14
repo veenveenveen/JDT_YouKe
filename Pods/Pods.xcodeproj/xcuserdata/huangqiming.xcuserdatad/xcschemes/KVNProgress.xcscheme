@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '884F8254512A9C221DE89FE42A2D8D33'
-               BlueprintName = 'Pods-JingDianTongYouKe'
+               BlueprintIdentifier = '4789BDA0DA41FF5A32F1C496408A2C0E'
+               BlueprintName = 'KVNProgress'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'libPods-JingDianTongYouKe.a'>
+               BuildableName = 'libKVNProgress.a'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

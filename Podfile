@@ -8,7 +8,7 @@ target 'JingDianTongYouKe' do
   # Pods for JingDianTongYouKe
 pod 'CocoaAsyncSocket', :git => 'https://github.com/robbiehanson/CocoaAsyncSocket.git'
 
-#pod 'KVNProgress',:git=>'https://github.com/AssistoLab/KVNProgress.git'
+pod 'KVNProgress',:git=>'https://github.com/AssistoLab/KVNProgress.git'
 
 #pod 'HyphenateFullSDK', :git => 'https://github.com/easemob/hyphenate-full-cocoapods.git'
 end

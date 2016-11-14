@@ -9,11 +9,10 @@
 #import "AppDelegate.h"
 
 @interface AppDelegate () {
-    UIBackgroundTaskIdentifier taskID;
+//    UIBackgroundTaskIdentifier taskID;
 }
 
 @property (nonatomic, strong) ViewController *vc;
-
 
 @end
 
@@ -22,6 +21,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
+//    self.vc = [[ViewController alloc] initWithNibName:@"ViewController" bundle:nil];
     self.vc = [[ViewController alloc] init];
     
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];

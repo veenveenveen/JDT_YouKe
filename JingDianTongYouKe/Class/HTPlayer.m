@@ -48,13 +48,22 @@
         //绑定端口号
         [udpSocket bindToPort:kDefaultPort error:&error];
         if (error != nil) {
-            NSLog(@"error:%@",error.description);
+            NSLog(@"bind To Port error:%@",error.description);
         }
         //添加多地址发送，用于连接一个多组播
-        [udpSocket joinMulticastGroup:kDefaultIP error:&error];
+//        [udpSocket joinMulticastGroup:@"234.5.6.1" error:&error];
+        
+        [udpSocket joinMulticastGroup:@"224.0.0.1"  error:&error];
         if (error != nil) {
-            NSLog(@"error:%@",error.description);
+            NSLog(@"join Multicast Group error:%@",error.description);
         }
+        
+        [udpSocket enableBroadcast:YES error:&error];
+        if (error != nil) {
+            NSLog(@"enable Broadcast error:%@",error.description);
+        }
+        
+        self.isplaying = NO;
 
         [self setupAudioPlaying];
     }
@@ -199,16 +208,17 @@ void outputCallback (void *inUserData, AudioQueueRef inAQ, AudioQueueBufferRef i
         return;
     }
     
-    if (receiveArray.count < 12) {//会接收不到某些数据 但基本不会影响语音流畅度 需要改善
+//    if (receiveArray.count < 12) {//会接收不到某些数据 但基本不会影响语音流畅度 需要改善
         [receiveArray addObject:data];
-    }
+//    }
     
     NSLog(@"udp socket receive data len = %lu; waiting count : %lu", (unsigned long)data.length, (unsigned long)receiveArray.count);
-    
+//    j++;
+//    NSLog(@"receive number = %d",j);
     
     //test
-    //[data getBytes: &j length: sizeof(int)];
-    //NSLog(@"receive number = %d",j);
+//    [data getBytes: &j length: sizeof(int)];
+//    NSLog(@"receive number = %d",j);
 }
 
 @end

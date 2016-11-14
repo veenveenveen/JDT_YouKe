@@ -22,54 +22,26 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EJA-r6-3C8" userLabel="TopView">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="547"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background" translatesAutoresizingMaskIntoConstraints="NO" id="rpb-tU-Non">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="547"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                     </imageView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3lx-zV-DMz">
-                                        <rect key="frame" x="150" y="199" width="75" height="109"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="109" id="8CD-ao-gQD"/>
-                                            <constraint firstAttribute="width" constant="75" id="fau-oW-CgZ"/>
-                                        </constraints>
-                                        <state key="normal" image="record_false"/>
-                                    </button>
-                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="正在播放..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sTO-T4-zB9">
-                                        <rect key="frame" x="146" y="328" width="83.5" height="20.5"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="rpb-tU-Non" firstAttribute="leading" secondItem="EJA-r6-3C8" secondAttribute="leading" id="74a-C3-72g"/>
                                     <constraint firstAttribute="trailing" secondItem="rpb-tU-Non" secondAttribute="trailing" id="9kd-jh-vzl"/>
                                     <constraint firstAttribute="bottom" secondItem="rpb-tU-Non" secondAttribute="bottom" id="B1m-nT-REu"/>
-                                    <constraint firstItem="sTO-T4-zB9" firstAttribute="centerX" secondItem="3lx-zV-DMz" secondAttribute="centerX" id="Idr-SN-GjG"/>
-                                    <constraint firstItem="sTO-T4-zB9" firstAttribute="top" secondItem="3lx-zV-DMz" secondAttribute="bottom" constant="20" id="V6z-9e-jnV"/>
-                                    <constraint firstItem="3lx-zV-DMz" firstAttribute="centerX" secondItem="EJA-r6-3C8" secondAttribute="centerX" id="uXb-0v-MeI"/>
                                     <constraint firstItem="rpb-tU-Non" firstAttribute="top" secondItem="EJA-r6-3C8" secondAttribute="top" id="xQl-Wa-bK6"/>
-                                    <constraint firstItem="3lx-zV-DMz" firstAttribute="centerY" secondItem="EJA-r6-3C8" secondAttribute="centerY" constant="-20" id="yqU-RE-9Z0"/>
                                 </constraints>
                             </view>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_five" translatesAutoresizingMaskIntoConstraints="NO" id="Ppi-T9-cLs">
-                                <rect key="frame" x="0.0" y="547" width="375" height="120"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="120" id="rr6-D4-7M0"/>
-                                </constraints>
-                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="Ppi-T9-cLs" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="EVH-ta-iUl"/>
-                            <constraint firstItem="Ppi-T9-cLs" firstAttribute="top" secondItem="EJA-r6-3C8" secondAttribute="bottom" id="Hwo-hv-mkD"/>
-                            <constraint firstAttribute="trailing" secondItem="Ppi-T9-cLs" secondAttribute="trailing" id="I27-by-Zkl"/>
                             <constraint firstItem="EJA-r6-3C8" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="RcN-1y-5Hw"/>
                             <constraint firstAttribute="trailing" secondItem="EJA-r6-3C8" secondAttribute="trailing" id="eNr-Bf-fPi"/>
                             <constraint firstItem="EJA-r6-3C8" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="hGu-hh-NB6"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Ppi-T9-cLs" secondAttribute="bottom" id="nC0-5X-mWT"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -80,7 +52,5 @@
     </scenes>
     <resources>
         <image name="background" width="375" height="667"/>
-        <image name="logo_five" width="801" height="157"/>
-        <image name="record_false" width="75" height="109"/>
     </resources>
 </document>

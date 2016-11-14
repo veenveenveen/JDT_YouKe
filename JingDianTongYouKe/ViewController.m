@@ -9,8 +9,11 @@
 #import "ViewController.h"
 #import <AVFoundation/AVFoundation.h>
 #import "HTShowStatusView.h"
+#import "HTWebViewController.h"
 
 @interface ViewController ()
+
+@property (weak, nonatomic) IBOutlet UIButton *webButton;
 
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
 @property (weak, nonatomic) IBOutlet UILabel *promptLable;
@@ -19,6 +22,7 @@
 @property (nonatomic, assign) BOOL hasHeadset;
 
 @property (nonatomic, strong) HTShowStatusView *statusView;
+@property (nonatomic, strong) HTWebViewController *webViewController;
 
 @end
 
@@ -38,6 +42,8 @@
         [self setupAudioSession];
         
         [self addListener];
+        
+        [self setupWebButton];
     }
     return self;
 }
@@ -50,6 +56,20 @@
     [super didReceiveMemoryWarning];
 }
 
+- (void)setupWebButton {
+    self.webButton.backgroundColor = [UIColor colorWithWhite:0.9 alpha:0.2];
+    self.webButton.layer.cornerRadius = 5;
+    self.webButton.layer.masksToBounds = YES;
+}
+
+#pragma mark - 点击进入网址
+
+- (IBAction)clickToWeb:(id)sender {
+    
+    self.webViewController = [[HTWebViewController alloc] initWithNibName:@"WebView" bundle:nil];
+    [self presentViewController:self.webViewController animated:YES completion:nil];
+}
+
 #pragma mark - 开始对讲/结束对讲
 
 - (IBAction)playOrPause:(id)sender {
@@ -60,7 +80,6 @@
         });
         
         [self.player stopPlaying];
-        self.player.isplaying = NO;
     }
     else if (!self.player.isplaying) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -69,7 +88,6 @@
         });
         
         [self.player startPlaying];
-        self.player.isplaying = YES;
     }
 }
 

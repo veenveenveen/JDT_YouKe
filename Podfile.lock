@@ -2,22 +2,30 @@ PODS:
   - CocoaAsyncSocket (7.5.1):
     - CocoaAsyncSocket/GCD (= 7.5.1)
   - CocoaAsyncSocket/GCD (7.5.1)
+  - KVNProgress (2.3.1)
 
 DEPENDENCIES:
   - CocoaAsyncSocket (from `https://github.com/robbiehanson/CocoaAsyncSocket.git`)
+  - KVNProgress (from `https://github.com/AssistoLab/KVNProgress.git`)
 
 EXTERNAL SOURCES:
   CocoaAsyncSocket:
     :git: https://github.com/robbiehanson/CocoaAsyncSocket.git
+  KVNProgress:
+    :git: https://github.com/AssistoLab/KVNProgress.git
 
 CHECKOUT OPTIONS:
   CocoaAsyncSocket:
     :commit: f3cf8a6fb27de57bd70b40cf4173d695d4a17b22
     :git: https://github.com/robbiehanson/CocoaAsyncSocket.git
+  KVNProgress:
+    :commit: afc2bf451c0f1e4af52068ad497c0d7414009738
+    :git: https://github.com/AssistoLab/KVNProgress.git
 
 SPEC CHECKSUMS:
   CocoaAsyncSocket: e0a7e93b2ffa411592ff87e58524fbbc9b95b4fa
+  KVNProgress: 8167b1f19e2758290c0b6143020ed9dcbb0477a1
 
-PODFILE CHECKSUM: c291eeb589327d1e1c8cd6e81b7b7d8f5d363133
+PODFILE CHECKSUM: e50d9e12ecfea35eda6da08300ade1f285acc9a3
 
 COCOAPODS: 1.0.1

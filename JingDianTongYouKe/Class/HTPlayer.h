@@ -16,8 +16,8 @@
 #define kSamplingRate 8000
 #define kDefaultOutputBufferSize 640
 //ip地址
-#define kDefaultIP @"234.5.6.1"
-//#define kDefaultIP @"255.255.255.255"
+//#define kDefaultIP @"234.5.6.1"
+#define kDefaultIP @"255.255.255.255"
 //#define kDefaultIP @"172.16.78.138"
 //端口号
 #define kDefaultPort 9081

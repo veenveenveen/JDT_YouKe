@@ -9,6 +9,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>KVNProgress.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-JingDianTongYouKe.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -17,7 +22,12 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>6652245C02FCD902AAF8F66AB495C4F9</key>
+		<key>4789BDA0DA41FF5A32F1C496408A2C0E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>884F8254512A9C221DE89FE42A2D8D33</key>
 		<dict>
 			<key>primary</key>
 			<true/>
