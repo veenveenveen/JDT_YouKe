@@ -8,16 +8,19 @@
 
 #import "HTWebViewController.h"
 #import "KVNProgress.h"
+#import <WebKit/WebKit.h>
 
-@interface HTWebViewController () <UIWebViewDelegate>
+#define WEB_W [UIScreen mainScreen].bounds.size.width
+#define WEB_H [UIScreen mainScreen].bounds.size.height
 
-@property (weak, nonatomic) IBOutlet UIWebView *webView;
-@property (nonatomic, assign) NSTimeInterval timetap;
+@interface HTWebViewController () <WKNavigationDelegate,NSURLConnectionDelegate,NSURLConnectionDataDelegate>
+{
+    NSURLConnection *_theConnection;
+}
 
-@property (nonatomic, assign) BOOL loadSuccess;
+@property (nonatomic, strong) WKWebView *webView;
 
 @end
-
 
 @implementation HTWebViewController
 
@@ -25,63 +28,112 @@
     
     [super viewDidLoad];
     
-    self.webView.scrollView.bounces = NO;
+    self.webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 44+20, WEB_W, WEB_H-64)];
     
-    self.webView.delegate = self;
+    self.webView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1];
     
-    self.loadSuccess = NO;
+    self.webView.scrollView.scrollEnabled = NO;
     
-    [self toWebView];
+    self.webView.navigationDelegate = self;
     
-}
-
-- (IBAction)back:(id)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)toWebView {
-    NSString *urlStr = @"http://m.wfzkd.com/#!/";
-//    NSString *urlStr = @"http://www.baidu.com";
-
-    NSURL *url = [NSURL URLWithString:urlStr];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    [self.webView loadRequest:request];
+    [self reloadView];
+    
+    [self.view addSubview:self.webView];
+    
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
-
-#pragma mark - UIWebView delegate methods
-
-- (void)webViewDidStartLoad:(UIWebView *)webView {
-    [KVNProgress showWithStatus:@"正在加载..."];
-    self.loadSuccess = NO;
-    [self performSelector:@selector(checkTime) withObject:self afterDelay:15];
-
+//返回
+- (IBAction)back:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:^{
+        //清空网页内容
+        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]];
+        [self.webView loadRequest:request];
+    }];
 }
 
-- (void)checkTime {
-    if (!self.loadSuccess) {
-        [KVNProgress dismiss];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            UIAlertController *alertC = [UIAlertController alertControllerWithTitle:@"提示" message:@"网络君正忙,请稍后重试" preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *action = [UIAlertAction actionWithTitle:@"知道了" style:UIAlertActionStyleDefault handler:nil];
-            [alertC addAction:action];
-            [self presentViewController:alertC animated:YES completion:nil];
-        });
+#pragma mark - load webView
+
+- (void)toWebView {
+    NSString *urlStr = @"http://m.wfzkd.com/#!/";
+    NSURL *url = [NSURL URLWithString:urlStr];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:20];
+    
+    [self.webView loadRequest:request];
+    if (_theConnection) {
+        [_theConnection cancel];
+        NSLog(@"safe release connection");
+    }
+    _theConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+}
+
+- (void)reloadView {
+    [self toWebView];
+}
+
+#pragma mark - NSURLConnectionDataDelegate
+
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+    if ([response isKindOfClass:[NSHTTPURLResponse class]]){
+        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse*)response;
+        if ((([httpResponse statusCode]/100) == 2)){//成功响应
+            NSLog(@"connection ok statusCode %ld",(long)[httpResponse statusCode]);
+        }
+        else{
+            NSError *error = [NSError errorWithDomain:@"HTTP" code:[httpResponse statusCode] userInfo:nil];
+            if ([error code] == 404){
+                NSLog(@"404");
+                [KVNProgress dismiss];
+                [self showAlertWithMessage:@"服务器找不到所请求的资源"];
+            }
+        }
     }
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView {
-    self.loadSuccess = YES;
+#pragma mark - NSURLConnectionDelegate
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+    if (error.code == 22) {//The operation couldn’t be completed. Invalid argument
+        NSLog(@"22");
+        [self performSelector:@selector(showAlertWithMessage:) withObject:@"操作无法完成！" afterDelay:2];
+    }
+    else if (error.code == -1001) {//The request timed out.
+        NSLog(@"-1001");
+        [self performSelector:@selector(showAlertWithMessage:) withObject:@"网络君正忙,请稍后重试" afterDelay:2];
+    }
+    else if (error.code == -1005) {//The network connection was lost.
+        NSLog(@"-1005");
+        [self performSelector:@selector(showAlertWithMessage:) withObject:@"网络不可用,请尝试重新连接" afterDelay:2];
+    }
+    else if (error.code == -1009){ //The Internet connection appears to be offline
+        NSLog(@"-1009");
+        [self performSelector:@selector(showAlertWithMessage:) withObject:@"网络未连接,请检查网络后重试" afterDelay:2];
+        
+    }
+}
+
+#pragma mark - WKWebView delegate methods
+
+- (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation {
+    [KVNProgress showWithStatus:@"正在加载..."];
+}
+
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
     [KVNProgress dismiss];
 }
 
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+- (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error {
+    [self showAlertWithMessage:@"加载失败,请稍后重试"];
+}
+
+#pragma mark - showAlert method
+
+- (void)showAlertWithMessage:(NSString *)message {
     [KVNProgress dismiss];
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIAlertController *alertC = [UIAlertController alertControllerWithTitle:@"提示" message:@"加载失败" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alertC = [UIAlertController alertControllerWithTitle:@"提示" message:message preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *action = [UIAlertAction actionWithTitle:@"知道了" style:UIAlertActionStyleDefault handler:nil];
         [alertC addAction:action];
         [self presentViewController:alertC animated:YES completion:nil];

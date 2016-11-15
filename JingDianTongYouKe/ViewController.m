@@ -40,7 +40,7 @@
         self.hasHeadset = NO;
         
         [self setupAudioSession];
-        
+        self.webViewController = [[HTWebViewController alloc] initWithNibName:@"WebView" bundle:nil];
         [self addListener];
         
         [self setupWebButton];
@@ -65,8 +65,7 @@
 #pragma mark - 点击进入网址
 
 - (IBAction)clickToWeb:(id)sender {
-    
-    self.webViewController = [[HTWebViewController alloc] initWithNibName:@"WebView" bundle:nil];
+    [self.webViewController reloadView];
     [self presentViewController:self.webViewController animated:YES completion:nil];
 }
 

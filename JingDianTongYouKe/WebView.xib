@@ -12,7 +12,6 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HTWebViewController">
             <connections>
                 <outlet property="view" destination="iN0-l3-epB" id="s2D-nP-6Op"/>
-                <outlet property="webView" destination="5hG-y1-pjg" id="vyO-Ll-Iht"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -33,20 +32,12 @@
                         </navigationItem>
                     </items>
                 </navigationBar>
-                <webView contentMode="scaleToFill" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5hG-y1-pjg">
-                    <rect key="frame" x="0.0" y="64" width="375" height="603"/>
-                    <color key="backgroundColor" red="0.97638529539108276" green="0.97652524709701538" blue="0.97635477781295776" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                </webView>
             </subviews>
             <color key="backgroundColor" red="0.97638529539108276" green="0.97652524709701538" blue="0.97635477781295776" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="1pl-na-2mZ" secondAttribute="trailing" id="499-Dx-0Yc"/>
                 <constraint firstItem="1pl-na-2mZ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="7DC-Cr-dYo"/>
                 <constraint firstItem="1pl-na-2mZ" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="20" id="H2w-Xg-vET"/>
-                <constraint firstAttribute="trailing" secondItem="5hG-y1-pjg" secondAttribute="trailing" id="PGc-8R-Lnf"/>
-                <constraint firstAttribute="bottom" secondItem="5hG-y1-pjg" secondAttribute="bottom" id="Upa-4i-xeM"/>
-                <constraint firstItem="5hG-y1-pjg" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Vql-w3-wq9"/>
-                <constraint firstItem="5hG-y1-pjg" firstAttribute="top" secondItem="1pl-na-2mZ" secondAttribute="bottom" id="bbE-lF-98x"/>
             </constraints>
         </view>
     </objects>

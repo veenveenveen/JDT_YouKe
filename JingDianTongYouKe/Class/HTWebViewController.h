@@ -10,4 +10,6 @@
 
 @interface HTWebViewController : UIViewController
 
+- (void)reloadView;
+
 @end

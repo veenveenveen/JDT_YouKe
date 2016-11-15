@@ -21,7 +21,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
-//    self.vc = [[ViewController alloc] initWithNibName:@"ViewController" bundle:nil];
     self.vc = [[ViewController alloc] init];
     
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];

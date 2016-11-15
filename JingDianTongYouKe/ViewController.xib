@@ -61,8 +61,9 @@
                     </constraints>
                 </imageView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wop-Xu-BeA">
-                    <rect key="frame" x="281" y="602" width="78" height="30"/>
-                    <state key="normal" title="  点击进入  ">
+                    <rect key="frame" x="274" y="601" width="91" height="32"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <state key="normal" title="   点击进入   ">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
@@ -76,7 +77,7 @@
                 <constraint firstItem="IyH-A8-M2t" firstAttribute="leading" secondItem="CBv-rD-VtB" secondAttribute="leading" id="Klk-ve-jF0"/>
                 <constraint firstItem="wop-Xu-BeA" firstAttribute="centerY" secondItem="raG-1E-4ic" secondAttribute="centerY" id="L6p-R1-CZM"/>
                 <constraint firstAttribute="trailing" secondItem="raG-1E-4ic" secondAttribute="trailing" id="RuO-m7-zJ3"/>
-                <constraint firstAttribute="trailing" secondItem="wop-Xu-BeA" secondAttribute="trailing" constant="16" id="bQi-sk-A7h"/>
+                <constraint firstAttribute="trailing" secondItem="wop-Xu-BeA" secondAttribute="trailing" constant="10" id="bQi-sk-A7h"/>
                 <constraint firstItem="raG-1E-4ic" firstAttribute="leading" secondItem="CBv-rD-VtB" secondAttribute="leading" id="eeL-JW-gKe"/>
                 <constraint firstItem="raG-1E-4ic" firstAttribute="top" secondItem="IyH-A8-M2t" secondAttribute="bottom" id="hIb-7Y-Wr6"/>
                 <constraint firstAttribute="trailing" secondItem="IyH-A8-M2t" secondAttribute="trailing" id="r7B-Og-yh6"/>
