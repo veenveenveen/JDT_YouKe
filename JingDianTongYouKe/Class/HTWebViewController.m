@@ -57,7 +57,10 @@
 #pragma mark - load webView
 
 - (void)toWebView {
+    //@"http://m.wfzkd.com/#!/"
     NSString *urlStr = @"http://m.wfzkd.com/#!/";
+//    NSString *urlStr = @"http://www.baidu.com";
+    NSLog(@"%@",urlStr);
     NSURL *url = [NSURL URLWithString:urlStr];
     NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:20];
     
@@ -80,6 +83,7 @@
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse*)response;
         if ((([httpResponse statusCode]/100) == 2)){//成功响应
             NSLog(@"connection ok statusCode %ld",(long)[httpResponse statusCode]);
+            [KVNProgress dismiss];
         }
         else{
             NSError *error = [NSError errorWithDomain:@"HTTP" code:[httpResponse statusCode] userInfo:nil];

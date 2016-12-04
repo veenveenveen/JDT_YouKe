@@ -66,6 +66,7 @@
         self.isplaying = NO;
 
         [self setupAudioPlaying];
+        
     }
     return self;
 }
@@ -82,7 +83,6 @@
 //输出回调
 void outputCallback (void *inUserData, AudioQueueRef inAQ, AudioQueueBufferRef inBuffer) {
     @autoreleasepool {
-        
         //NSLog(@"播放回调");
         
         HTPlayer *player = (__bridge HTPlayer *)(inUserData);
@@ -212,7 +212,8 @@ void outputCallback (void *inUserData, AudioQueueRef inAQ, AudioQueueBufferRef i
         [receiveArray addObject:data];
 //    }
     
-    NSLog(@"udp socket receive data len = %lu; waiting count : %lu", (unsigned long)data.length, (unsigned long)receiveArray.count);
+//    NSLog(@"udp socket receive data len = %lu; waiting count : %lu", (unsigned long)data.length, (unsigned long)receiveArray.count);
+    
 //    j++;
 //    NSLog(@"receive number = %d",j);
     

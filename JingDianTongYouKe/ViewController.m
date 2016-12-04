@@ -39,8 +39,10 @@
         self.hasInterruptedWhenPlaying = NO;
         self.hasHeadset = NO;
         
-        [self setupAudioSession];
         self.webViewController = [[HTWebViewController alloc] initWithNibName:@"WebView" bundle:nil];
+        
+        [self setupAudioSession];
+        
         [self addListener];
         
         [self setupWebButton];
@@ -96,8 +98,12 @@
     //音频会话
     AVAudioSession *session = [AVAudioSession sharedInstance];
     
+    NSError *error = nil;
     //设置会话类型(后台播放)
-    [session setCategory:AVAudioSessionCategoryPlayback error:nil];
+    [session setCategory:AVAudioSessionCategoryPlayAndRecord error:&error];
+    if (error) {
+        NSLog(@"error: %@",error.description);
+    }
     
     //激活会话
     [session setActive:YES error:nil];

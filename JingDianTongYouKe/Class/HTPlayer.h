@@ -14,7 +14,7 @@
 #define kNumberBuffers 4
 //采样率为8000
 #define kSamplingRate 8000
-#define kDefaultOutputBufferSize 640
+#define kDefaultOutputBufferSize 320
 //ip地址
 //#define kDefaultIP @"234.5.6.1"
 #define kDefaultIP @"255.255.255.255"
